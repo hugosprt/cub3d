@@ -3,47 +3,38 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strnstr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rpol <rpol@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: hspriet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/23 03:05:31 by rpol              #+#    #+#             */
-/*   Updated: 2022/02/10 23:53:58 by rpol             ###   ########.fr       */
+/*   Created: 2021/11/23 17:18:14 by hspriet           #+#    #+#             */
+/*   Updated: 2021/12/09 15:38:18 by hspriet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 #include "libft.h"
-
-static size_t	strlen(const char *s)
-{
-	size_t	i;
-
-	i = 0;
-	if (!s)
-		return (0);
-	while (s[i])
-		i++;
-	return (i);
-}
 
 char	*ft_strnstr(const char *s1, const char *s2, size_t len)
 {
 	size_t	i;
 	size_t	j;
-	size_t	lens2;
 
+	i = 0;
 	j = 0;
-	lens2 = strlen(s2);
-	if (lens2 == 0)
-		return ((char *)s1);
-	while (j < len && s1[j])
+	if (!s2[i])
 	{
-		i = 0;
-		while ((s1[j + i] == s2[i]) && (i + j < len) && s2[i] && s1[i + j])
+		return ((char *) s1);
+	}
+	while (i < len && s1[i])
+	{
+		if (s1[i] == s2[j])
 		{
-			if (i == lens2 - 1)
-				return ((char *)(s1 + j));
-			i++;
+			while (s1[i + j] == s2[j] && (s2[j] && len > i + j))
+			{
+				j++;
+			}
+			if ((int)j == ft_strlen(s2))
+				return ((char *) &s1[i]);
 		}
-		j++;
+		j = 0;
+		i++;
 	}
 	return (NULL);
 }

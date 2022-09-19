@@ -3,48 +3,40 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rpol <rpol@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: hspriet <hspriet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/25 02:51:25 by rpol              #+#    #+#             */
-/*   Updated: 2022/02/10 22:51:31 by rpol             ###   ########.fr       */
+/*   Created: 2021/11/24 14:36:04 by hspriet           #+#    #+#             */
+/*   Updated: 2022/03/07 16:40:39 by hspriet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static size_t	strlen(const char *s)
+char	*ft_strjoin(char const *s1, char const *s2)
 {
-	size_t	i;
+	char	*s3;
+	int		len;
+	int		i;
+	int		j;
 
-	i = 0;
-	if (!s)
-		return (0);
-	while (s[i])
-		i++;
-	return (i);
-}
-
-char	*ft_strjoinc(char const *s1, char const *s2)
-{
-	size_t		i;
-	size_t		lens1;
-	size_t		lens2;
-	char		*news;
-
-	i = 0;
-	lens1 = strlen((char *)s1);
-	lens2 = strlen((char *)s2);
-	news = malloc(sizeof(char) * (lens1 + lens2 + 1));
-	if (!news)
+	if (!s1 || !s2)
 		return (NULL);
-	while (i < (lens1 + lens2))
+	len = ft_strlen(s1) + ft_strlen(s2);
+	s3 = (char *) malloc(1 + len * (sizeof (char)));
+	if (s3 == NULL)
+		return (NULL);
+	i = 0;
+	j = 0;
+	while (s1[i])
 	{
-		if (i < lens1)
-			news[i] = s1[i];
-		else
-			news[i] = s2[(i - lens1)];
+		s3[i] = s1[i];
 		i++;
 	}
-	news[i] = '\0';
-	return (news);
+	while (s2[j])
+	{
+		s3[i + j] = s2[j];
+		j++;
+	}
+	s3[i + j] = '\0';
+	return (s3);
 }

@@ -3,47 +3,33 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strlcat.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rpol <rpol@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: hspriet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/23 02:29:25 by rpol              #+#    #+#             */
-/*   Updated: 2022/02/10 23:53:05 by rpol             ###   ########.fr       */
+/*   Created: 2021/12/09 14:33:41 by hspriet           #+#    #+#             */
+/*   Updated: 2021/12/09 14:36:48 by hspriet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static size_t	strlen(const char *s)
+size_t	ft_strlcat(char *s1, const char *s2, size_t n)
 {
+	size_t	lendest;
+	size_t	lensrc;
 	size_t	i;
 
 	i = 0;
-	if (!s)
-		return (0);
-	while (s[i])
-		i++;
-	return (i);
-}
-
-size_t	ft_strlcat(char *dest, const char *src, size_t len)
-{
-	size_t	i;
-	size_t	lendnd;
-	size_t	lens;
-
-	i = 0;
-	lendnd = 0;
-	lens = strlen((char *)src);
-	if (len == 0)
-		return (lens);
-	while (dest[lendnd] && lendnd < len)
-		lendnd++;
-	if (len == lendnd)
-		return (len + lens);
-	while (lendnd + i < len - 1 && src[i])
+	lendest = ft_strlen(s1);
+	lensrc = ft_strlen(s2);
+	if (n == 0)
+		return (lensrc);
+	if (n <= lendest)
+		return (n + lensrc);
+	while (n && (--n - lendest) && s2[i])
 	{
-		dest[i + lendnd] = src[i];
+		s1[lendest + i] = s2[i];
 		i++;
 	}
-	dest[i + lendnd] = '\0';
-	return (lendnd + lens);
+	s1[lendest + i] = '\0';
+	return (lensrc + lendest);
 }

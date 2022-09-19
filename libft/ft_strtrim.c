@@ -3,33 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strtrim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rpol <rpol@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: hspriet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/25 02:52:13 by rpol              #+#    #+#             */
-/*   Updated: 2022/02/10 23:54:55 by rpol             ###   ########.fr       */
+/*   Created: 2021/11/24 15:58:45 by hspriet           #+#    #+#             */
+/*   Updated: 2021/12/11 18:22:57 by hspriet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 #include "libft.h"
 
-static size_t	strlen(const char *s)
+static int	ft_ischarset(char c, char const *set)
 {
-	size_t	i;
+	int	i;
 
-	i = 0;
-	if (!s)
-		return (0);
-	while (s[i])
-		i++;
-	return (i);
-}
-
-static int	fstrchr(const char *set, char c)
-{
-	size_t	i;
-
-	if (!set)
-		return (0);
 	i = 0;
 	while (set[i])
 	{
@@ -42,16 +27,29 @@ static int	fstrchr(const char *set, char c)
 
 char	*ft_strtrim(char const *s1, char const *set)
 {
-	size_t	start;
-	size_t	end;
+	char	*s2;
+	int		start;
+	int		end;
+	int		i;
 
 	if (!s1 || !set)
-		return (0);
-	end = strlen(s1) - 1;
+		return (NULL);
 	start = 0;
-	while (start <= end && fstrchr(set, s1[start]))
+	while (s1[start] && (ft_ischarset(s1[start], set)))
 		start++;
-	while (start <= end && fstrchr(set, s1[end]))
+	end = ft_strlen(s1);
+	while (end > start && (ft_ischarset(s1[end - 1], set)))
 		end--;
-	return (ft_substr(s1, start, (end - start + 1)));
+	s2 = malloc(sizeof(char) * (end - start + 1));
+	if (!s2)
+		return (NULL);
+	i = 0;
+	while (start < end)
+	{
+		s2[i] = s1[start];
+		i++;
+		start++;
+	}
+	s2[i] = '\0';
+	return (s2);
 }

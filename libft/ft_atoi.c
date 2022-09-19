@@ -3,34 +3,73 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rpol <marvin@42.fr>                        +#+  +:+       +#+        */
+/*   By: hspriet <hspriet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/22 22:31:22 by rpol              #+#    #+#             */
-/*   Updated: 2021/12/02 09:18:39 by rpol             ###   ########.fr       */
+/*   Created: 2021/11/24 10:52:14 by hspriet           #+#    #+#             */
+/*   Updated: 2022/03/03 17:12:21 by hspriet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_atoi(const char *s)
+static	int	ft_isdigit2(char str)
 {
-	long long int	i;
-	int				sign;
-	long long int	nb;
+	if (str >= '0' && str <= '9')
+		return (1);
+	return (0);
+}
 
-	sign = 1;
-	i = 0;
+long	int	ft_atol(const char *str)
+{
+	int			i;
+	long int	nb;
+	int			sign;
+
 	nb = 0;
-	while (s[i] == '\t' || s[i] == '\n' || s[i] == '\v'
-		|| s[i] == '\f' || s[i] == '\r' || s[i] == ' ')
-		i++;
-	if (s[i] == '-')
-		sign = -1;
-	if (sign == -1 || s[i] == '+')
-		i++;
-	while (s[i] >= '0' && s[i] <= '9')
+	i = 0;
+	sign = 1;
+	while (str[i] && ((str[i] <= 13 && str[i] >= 9) || str[i] == ' '))
 	{
-		nb = (nb * 10) + (s[i] - '0');
+		i++;
+	}
+	if (str[i] == '+' && ft_isdigit2(str[i + 1]))
+		i++;
+	if (str[i] == '-' && ft_isdigit2(str[i + 1]))
+	{
+		sign = -1;
+		i++;
+	}
+	while (str[i] && ft_isdigit2(str[i]))
+	{
+		nb = str[i] - 48 + nb * 10;
+		i++;
+	}
+	return (nb * sign);
+}
+
+int	ft_atoi(const char *str)
+{
+	int			i;
+	int			nb;
+	int			sign;
+
+	nb = 0;
+	i = 0;
+	sign = 1;
+	while (str[i] && ((str[i] <= 13 && str[i] >= 9) || str[i] == ' '))
+	{
+		i++;
+	}
+	if (str[i] == '+' && ft_isdigit2(str[i + 1]))
+		i++;
+	if (str[i] == '-' && ft_isdigit2(str[i + 1]))
+	{
+		sign = -1;
+		i++;
+	}
+	while (str[i] && ft_isdigit2(str[i]))
+	{
+		nb = str[i] - 48 + nb * 10;
 		i++;
 	}
 	return (nb * sign);
