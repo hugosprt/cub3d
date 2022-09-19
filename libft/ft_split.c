@@ -3,78 +3,104 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rpol <rpol@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: hspriet <hspriet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/25 02:53:14 by rpol              #+#    #+#             */
-/*   Updated: 2022/02/03 14:42:33 by rpol             ###   ########.fr       */
+/*   Created: 2022/03/05 16:03:45 by hspriet           #+#    #+#             */
+/*   Updated: 2022/03/05 19:41:16 by hspriet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static char	**ft_free(char **sa, size_t i)
+int	how_many_word(char const *str, char charset)
 {
-	while (i > 0)
+	int	i;
+	int	k;
+
+	k = 0;
+	i = 0;
+	while (str[i] != '\0')
 	{
-		free(sa[i]);
-		i--;
+		if (is_charset(str[i], charset))
+		{
+			i++;
+		}
+		else if (!is_charset(str[i], charset))
+		{
+			k++;
+			while (!is_charset(str[i], charset) && str[i])
+				i++;
+		}
 	}
-	free(sa[0]);
-	free(sa);
+	return (k);
+}
+
+static char	*ft_strcpy(char const *s, int *i, int size)
+{
+	int		j;
+	char	*ret;
+
+	j = 0;
+	ret = (char *) malloc(sizeof(char) * (size + 1));
+	if (ret == NULL)
+		return (NULL);
+	while (j < size)
+	{
+		ret[j] = s[*i];
+		*i = *i + 1;
+		j++;
+	}
+	ret[j] = 0;
+	return (ret);
+}
+
+static char	**ft_25_lines(int size)
+{
+	char	**ret;
+
+	ret = (char **) malloc(sizeof(char *) * (size + 1));
+	if (!ret)
+		return (NULL);
+	ret[size] = NULL;
+	return (ret);
+}
+
+static char	**ft_free(char	**ret, int k)
+{
+	while (k >= 0)
+	{
+		free(ret[k]);
+		k--;
+	}
+	free(ret);
 	return (NULL);
 }
 
-static size_t	check_n_of_words(const char *s, char sep)
+char	**ft_split(char const *s, char charset)
 {
-	size_t	i;
-	size_t	n;
+	char	**ret;
+	int		i;	
+	int		j;	
+	int		k;	
 
+	k = -1;
 	i = 0;
-	n = 0;
+	ret = ft_25_lines(how_many_word(s, charset));
+	if (!ret)
+		return (NULL);
 	while (s[i])
 	{
-		if (s[i] != sep && (s[i + 1] == sep || s[i + 1] == '\0'))
-			n++;
-		i++;
-	}
-	return (n);
-}
-
-static size_t	len_b_sep(char const *s, char sep)
-{
-	size_t	i;
-
-	i = 0;
-	while (s[i] && s[i] != sep)
-		i++;
-	return (i);
-}
-
-char	**ft_split(char const *s, char c)
-{
-	size_t		i;
-	char		**sa;
-
-	i = 0;
-	if (!s)
-		return (NULL);
-	sa = malloc(sizeof(char *) * (check_n_of_words(s, c) + 1));
-	if (!sa)
-		return (NULL);
-	while (check_n_of_words(s, c))
-	{
-		while (*s && *s == c)
-			s++;
-		if (*s && *s != c)
+		if (s[i] != charset)
 		{
-			sa[i] = ft_substr(s, 0, len_b_sep(s, c));
-			if (!sa[i])
-				return (ft_free(sa, i));
-			i++;
+			j = i;
+			while (s[j] != charset && s[j])
+				j++;
+			ret[++k] = ft_strcpy(s, &i, j - i);
+			if (!ret[k])
+				return (ft_free(ret, k));
 		}
-		while (*s && *s != c)
-			s++;
+		else
+			i++;
 	}
-	sa[i] = NULL;
-	return (sa);
+	return (ret);
 }

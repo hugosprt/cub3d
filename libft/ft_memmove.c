@@ -3,34 +3,35 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memmove.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rpol <marvin@42.fr>                        +#+  +:+       +#+        */
+/*   By: hspriet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/23 02:07:01 by rpol              #+#    #+#             */
-/*   Updated: 2021/12/02 23:25:19 by rpol             ###   ########.fr       */
+/*   Created: 2021/11/23 11:42:56 by hspriet           #+#    #+#             */
+/*   Updated: 2021/12/11 17:03:58 by hspriet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 #include "libft.h"
 
-void	*ft_memmove(void *dst, const void *src, size_t len)
+void	*ft_memmove(void *dest, const void *src, size_t n)
 {
-	size_t	i;
+	size_t		i;
+	char		*tmp;
+	char		*tmp2;
 
+	tmp = (char *)dest;
+	tmp2 = (char *)src;
 	i = 0;
-	if (!dst && !src)
+	if (!dest && !src)
 		return (NULL);
-	if ((char *)dst < (const char *)src)
+	if (tmp > tmp2)
+		while (n-- > 0)
+			tmp[n] = tmp2[n];
+	else
 	{
-		while (i < len)
+		while (i < n)
 		{
-			((char *)dst)[i] = ((const char *)src)[i];
+			tmp[i] = tmp2[i];
 			i++;
 		}
 	}
-	else
-	{
-		while (len--)
-			((char *)dst)[len] = ((const char *)src)[len];
-	}
-	return (dst);
+	return (dest);
 }

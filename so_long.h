@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   so_long.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hspriet <hspriet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rpol <rpol@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/22 17:41:50 by hspriet           #+#    #+#             */
-/*   Updated: 2022/04/26 17:23:07 by hspriet          ###   ########.fr       */
+/*   Updated: 2022/09/19 14:03:31 by rpol             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include <fcntl.h>
 
 # include "libft/libft.h"
-# include "minilibx-linux/mlx.h"
+# include "minilibx/mlx.h"
 
 # define BUFFER_SIZE 1
 

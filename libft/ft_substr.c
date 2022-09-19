@@ -3,47 +3,48 @@
 /*                                                        :::      ::::::::   */
 /*   ft_substr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rpol <marvin@42.fr>                        +#+  +:+       +#+        */
+/*   By: hspriet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/25 02:50:02 by rpol              #+#    #+#             */
-/*   Updated: 2021/12/02 23:30:28 by rpol             ###   ########.fr       */
+/*   Created: 2021/11/24 13:59:17 by hspriet           #+#    #+#             */
+/*   Updated: 2021/12/13 10:58:02 by hspriet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static size_t	strlen(const char *s)
+static	int	resize(char const *s, unsigned int start, size_t len)
 {
 	size_t	i;
 
 	i = 0;
-	if (!s)
+	if (ft_strlen(s) <= (int)start)
+	{
 		return (0);
-	while (s[i])
+	}
+	while (i < len && s[i])
+	{
 		i++;
+	}
 	return (i);
 }
 
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
+	char	*s2;
 	size_t	i;
-	size_t	lens;
-	char	*news;
 
+	if (!s)
+		return (NULL);
+	len = resize(s, start, len);
+	s2 = (char *) malloc(sizeof(char) * len + 1);
 	i = 0;
-	lens = strlen((char *)s);
-	if (start >= lens)
-		return (ft_strdup(""));
-	if (len > lens - start)
-		len = lens - start;
-	news = malloc(sizeof(char) * (len + 1));
-	if (!news)
+	if (s2 == NULL)
 		return (NULL);
 	while (i < len)
 	{
-		news[i] = s[start + i];
+		s2[i] = s[i + start];
 		i++;
 	}
-	news[i] = '\0';
-	return (news);
+	s2[i] = '\0';
+	return (s2);
 }

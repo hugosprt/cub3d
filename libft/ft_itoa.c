@@ -3,62 +3,51 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rpol <marvin@42.fr>                        +#+  +:+       +#+        */
+/*   By: hspriet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/25 02:54:18 by rpol              #+#    #+#             */
-/*   Updated: 2021/12/02 09:21:30 by rpol             ###   ########.fr       */
+/*   Created: 2021/12/11 14:15:50 by hspriet           #+#    #+#             */
+/*   Updated: 2021/12/11 18:19:39 by hspriet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 #include "libft.h"
 
-static size_t	intlen(int n)
+static int	nbr_len(int n)
 {
-	size_t	len;
+	int	len;
 
 	len = 0;
-	if (n < 0)
-		n *= -1;
-	while (n > 0)
+	while (n >= 1 || n <= -1)
 	{
-		n /= 10;
 		len++;
+		n /= 10;
 	}
 	return (len);
 }
 
-static size_t	sign(int *n)
-{
-	if (*n < 0)
-	{
-		*n *= -1;
-		return (1);
-	}
-	return (0);
-}
-
 char	*ft_itoa(int n)
 {
-	size_t	len;
-	int		tmp;
-	char	*s;
+	int		len;
+	int		sign;
+	char	*nb;
 
-	if (n == 0)
-		return (ft_strdup("0"));
-	if (n == -2147483648)
-		return (ft_strdup("-2147483648"));
-	tmp = n;
-	len = intlen(n) + sign(&n);
-	s = malloc(sizeof(char) * (len + 1));
-	if (!s)
-		return (NULL);
-	s[len--] = '\0';
-	while (n > 0)
+	len = nbr_len(n);
+	sign = 1;
+	if (n <= 0)
 	{
-		s[len--] = '0' + (n % 10);
+		sign = -1;
+		len++;
+	}
+	nb = malloc(sizeof(char) * (len + 1));
+	if (!nb)
+		return (NULL);
+	nb[0] = '-';
+	if (n == 0)
+		nb[0] = '0';
+	nb[len] = '\0';
+	while (--len >= 0 && (n >= 1 || n <= -1))
+	{
+		nb[len] = n % 10 * sign + '0';
 		n /= 10;
 	}
-	if (tmp < 0)
-		s[0] = '-';
-	return (s);
+	return (nb);
 }
