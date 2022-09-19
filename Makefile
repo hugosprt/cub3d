@@ -1,8 +1,13 @@
-NAME        = so_long 
+NAME        = cub3d 
 CC            = cc
 CFLAGS        = -Wall -Werror -Wextra -g
 # CFLAGS        += -fsanitize=address -g3
-SRCS         = main.c parse.c printtiles.c get_next_line.c get_next_line_utils.c i_like_to_move_it.c error.c
+SRCS         = srcs/main.c \
+				srcs/gnl/get_next_line.c\
+				srcs/gnl/get_next_line_utils.c\
+				srcs/errors/error.c \
+				srcs/parse/parse.c
+
 OBJS        = $(SRCS:.c=.o)
 LIBFT        = libft/libft.a
 MLX            = -L ./minilibx/ -lmlx -lXext -lX11 -lm -O3
