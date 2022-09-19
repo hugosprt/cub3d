@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 #include "get_next_line.h"
+#include "../../includes/cub.h"
 
 int	ft_strlen_buff(char *str)
 {

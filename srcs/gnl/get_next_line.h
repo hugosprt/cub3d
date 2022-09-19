@@ -16,7 +16,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <string.h>
-# include "so_long.h"
+#include "../../includes/cub.h"
 
 int		ft_strlen_buff(char *str);
 int		ft_strlen2(char *str);
