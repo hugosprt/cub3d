@@ -6,36 +6,41 @@
 /*   By: rpol <rpol@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/12 17:31:45 by hspriet           #+#    #+#             */
-/*   Updated: 2022/09/23 17:02:24 by rpol             ###   ########.fr       */
+/*   Updated: 2022/09/28 18:13:15 by rpol             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub.h"
 
-void	move_up(t_game *root, int n)
+void	move_right(t_game *root, int n)
 {
-	if (root->tab[root->y -1][root->x] == '1')
+	if (n == 1)
+	{
+		root->p->x += 10;
+		ft_printf("hop la un pas de plus:%d\n", n);
 		print_tiles(root, root->tab);
+	}
 	else
 	{
-		root->tab[root->y][root->x] = '0';
-		root->y = root->y - 1;
-		root->tab[root->y][root->x] = 'P';
-		root->step = root->step + 1;
+		root->p->x -= 10;
 		ft_printf("hop la un pas de plus:%d\n", n);
 		print_tiles(root, root->tab);
 	}
 }
 
 
-void	move_right(t_game *root, int n)
+void	move_up(t_game *root, int n)
 {
-	if (root->p->x + n < 1)
+	if (n == 1)
+	{
+		root->p->y -= 10;
+		ft_printf("hop la un pas de plus:%d\n", n);
 		print_tiles(root, root->tab);
+	}
 	else
 	{
-		root->p->y = root->p->y + n;
-		ft_printf("hop la un pas de cote de plus:%d\n", n);
+		root->p->y += 10;
+		ft_printf("hop la un pas de plus:%d\n", n);
 		print_tiles(root, root->tab);
 	}
 }

@@ -27,7 +27,7 @@ static int	ft_truc(int keycode, t_game *g)
 	if (keycode == 65363)
 		rotate(g, 1);
 	if (keycode == 65307)
-		finish(g, g->tab);
+		finish(g);
 	return (0);
 }
 

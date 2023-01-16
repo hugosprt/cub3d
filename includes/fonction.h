@@ -11,7 +11,7 @@ void    parse(char *file, t_game *game);
 
 void	init_img(t_game *g, char **tab);
 
-void	finish(t_game *g, char **tab);
+void	finish(t_game *g);
 
 void	print_tiles(t_game *a, char **tab);
 

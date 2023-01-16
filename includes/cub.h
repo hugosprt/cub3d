@@ -22,7 +22,6 @@
 # define BUFFER_SIZE 1
 
 enum {
-	PLAYER,
 	WALL,
 	WALL2
 };
