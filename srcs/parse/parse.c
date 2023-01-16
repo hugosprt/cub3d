@@ -27,7 +27,7 @@ void	throw_error3(t_game *game, char *tab)
 
 void	check_error(t_game *game, char *tab)
 {
-	if (game->is_player != 'N'  || game->is_valid != 1)
+	if (game->is_player != 1  || game->is_valid != 1)
 		throw_error3(game, tab);
 }
 
@@ -67,7 +67,7 @@ void	firstlast(t_game *game, char *av)
 
 // char **add_border(t_game *game)
 // {
-
+    
 // }
 
 char	*parse(t_game *game)
@@ -100,7 +100,7 @@ void	struct_init(t_game *game, char *file)
 {
 	game->x = 0;
 	game->y = 0;
-	game->is_player = 0;
+	game->is_player = 1;
 	game->is_valid = 1;
 	game->fd = open(file, O_RDONLY);
 }
