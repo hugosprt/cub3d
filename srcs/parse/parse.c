@@ -126,16 +126,16 @@ char **add_border(t_game *game)
     char **new_map;
 
     j = 0;
-    new_map = malloc(sizeof(char **) * (find_longer_collum(game->tab) + 2));
+    new_map = malloc(sizeof(char **) * (find_longer_collum(game->tab)));
     while (j < find_longer_collum(game->tab))
     {
         k = 0;
-        str = ft_strjoin4("X", game->tab[j]);
-        new_map[j] = ft_strjoin4(str, "X");
+        str = ft_strdup(game->tab[j]);
+        new_map[j] = ft_strdup(str);
         k = ft_strlen(str);
-        while (k <= find_longer_line(game->tab))
+        while (k < find_longer_line(game->tab))
         {
-            new_map[j] = ft_strjoin4(new_map[j], "X");
+            new_map[j] = ft_strjoin4(new_map[j], " ");
             k++;
         }
         j++;
