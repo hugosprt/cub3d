@@ -19,10 +19,12 @@ void print_map(char **map)
 }
 
 
+
 int	main(int ac, char **av)
 {
 	t_game	*game;
 	char	*str;
+	int		l;
 
 	if (ac != 2)
 	{
@@ -32,6 +34,7 @@ int	main(int ac, char **av)
 	game = malloc(sizeof(t_game));
 	struct_init(game, av[1]);
 	str = parse(game);
+	l = add_value(game, str);
 	game->tab = ft_split(str, '\n');
 	free(str);
 	//init_img(game, game->tab);

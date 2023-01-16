@@ -25,35 +25,6 @@ void	throw_error3(t_game *game, char *tab)
 	exit(EXIT_FAILURE);
 }
 
-void	check_error(t_game *game, char *tab)
-{
-	if (game->is_player != 1  || game->is_valid != 1)
-		throw_error3(game, tab);
-}
-
-
-
-void	mid(t_game *game, char *av)
-{
-	int	i;
-
-	i = 0;
-	while (av[i] && av[i] != '\n')
-	{
-		if ((av[i] != '1' && i == 0) || (av[i] != '1' && (i == ft_strlen(av) - 2)))
-        {
-			game->is_valid = 2;
-        }
-		if (av[i] == 'N')
-			game->is_player = av[i];
-		else if (av[i] != '0' && av[i] != '1')
-        		game->is_valid = 9;
-		i++;
-	}
-}
-
-
-
 int     find_longer_line(char   **map)
 {
     int i;
@@ -166,12 +137,96 @@ char	*parse(t_game *game)
 		if (ret != NULL)
 			free(tmp);
 	}
-	return (free(tmp), check_error(game, tab), tab);
+	return (free(tmp), tab);
+}
+
+int	ft_isnum(char *str)
+{
+	while (*str)
+	{
+		if (*str >= '0' && *str <= '9')
+			return (1);
+		str++;
+	}
+	return (0);
+}
+
+int	ft_strcmp(const char *s1, const char *s2)
+{
+	size_t	i;
+
+	i = 0;
+	if (!s1 || !s2)
+		return (0);
+	while ((s1[i] || s2[i]))
+	{
+		if (s1[i] != s2[i])
+			return ((unsigned char)(s1[i]) - (unsigned char)(s2[i]));
+		i++;
+	}
+	return (0);
+}
+
+int add_value(t_game *game, char *str)
+{
+	int i;
+	char **tab;
+	int nb_color;
+	int texure;
+
+	(void) game ;
+	texure = 0;
+	nb_color = 0;
+	i = 0;
+	tab = ft_split(str, ' ');
+	while (tab[i])
+	{
+		if (ft_strcmp(tab[i], "NO") == 0)
+		{
+			game->NO_texture = ft_strdup(tab[i + 1]);
+			texure++;
+		}
+		else if (ft_strcmp(tab[i], "SO") == 0)
+		{
+			game->SO_texture = ft_strdup(tab[i++]);
+			texure++;
+		}
+		else if (ft_strcmp(tab[i], "WE") == 0)
+		{
+			game->WE_texture = ft_strdup(tab[i++]);
+			texure++;
+		}
+		else if (ft_strcmp(tab[i], "EA") == 0)
+		{
+			game->EA_texture = ft_strdup(tab[i++]);
+			texure++;
+		}
+		else if (ft_strcmp(tab[i], "F") == 0)
+		{
+			while(ft_strcmp(tab[i], ",") || ft_isnum(tab[i]))
+			{
+				game->floor_rgb = ft_strjoin(tab[i], ",");
+				i++;
+			}
+		}
+		else if (ft_strcmp(tab[i], "C") == 0)
+		{
+			while(ft_strcmp(tab[i], ",") || ft_isnum(tab[i]))
+			{
+				game->ceiling_rgb = ft_strjoin(tab[i], ",");
+				i++;
+			}
+		}
+		i++;
+	}
+	return (0);
 }
 
 void	struct_init(t_game *game, char *file)
 {
 	game->x = 0;
+	game-> truc_parse = 0;
+	game->texture =0;
 	game->y = 0;
 	game->is_player = 1;
 	game->is_valid = 1;
