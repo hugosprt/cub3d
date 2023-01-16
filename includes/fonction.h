@@ -2,5 +2,6 @@
 # define FONCTION_H
 
 void    parse_error();
-void    parse(char *file, t_game *game);
+char    *parse(t_game *game);
+void	struct_init(t_game *game, char *file);
 #endif
