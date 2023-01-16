@@ -52,23 +52,96 @@ void	mid(t_game *game, char *av)
 	}
 }
 
-void	firstlast(t_game *game, char *av)
-{
-	int	i;
 
-	i = 0;
-	while (av[i] != '\n' && av[i])
-	{
-		if (av[i] != '1')
-			game->is_valid = 0;
-		i++;
-	}
+
+int     find_longer_line(char   **map)
+{
+    int i;
+    int j;
+    int size;
+
+    size = 0;
+    i = 0;
+    j = 0;
+
+    while (map[i])
+    {
+        j = ft_strlen(map[i]);
+        if (j > size)
+            size = j;
+        i++;
+    }
+    return (size);
 }
 
-// char **add_border(t_game *game)
-// {
-    
-// }
+int     find_longer_collum(char   **map)
+{
+    int i;
+    int j;
+    int size;
+
+    size = 0;
+    i = 0;
+    j = 0;
+
+    while (map[i])
+    {
+        i++;
+    }
+    return (i);
+}
+char	*ft_strjoin4(char const *s1, char const *s2)
+{
+	char	*s3;
+	int		len;
+	int		i;
+	int		j;
+
+	if (!s1 || !s2)
+		return (NULL);
+	len = ft_strlen(s1) + ft_strlen(s2);
+	s3 = (char *) malloc(1 + len * (sizeof (char)));
+	if (s3 == NULL)
+		return (NULL);
+	i = 0;
+	j = 0;
+	while (s1[i])
+	{
+		s3[i] = s1[i];
+		i++;
+	}
+	while (s2[j])
+	{
+		s3[i + j] = s2[j];
+		j++;
+	}
+	s3[i + j] = '\0';
+	return (s3);
+}
+char **add_border(t_game *game)
+{
+    int k;
+    int j;
+    char *str;
+    char **new_map;
+
+    j = 0;
+    new_map = malloc(sizeof(char **) * (find_longer_collum(game->tab) + 2));
+    while (j < find_longer_collum(game->tab))
+    {
+        k = 0;
+        str = ft_strjoin4("X", game->tab[j]);
+        new_map[j] = ft_strjoin4(str, "X");
+        k = ft_strlen(str);
+        while (k <= find_longer_line(game->tab))
+        {
+            new_map[j] = ft_strjoin4(new_map[j], "X");
+            k++;
+        }
+        j++;
+    } 
+    return (new_map);    
+}
 
 char	*parse(t_game *game)
 {

@@ -33,12 +33,13 @@ int	main(int ac, char **av)
 	struct_init(game, av[1]);
 	str = parse(game);
 	game->tab = ft_split(str, '\n');
-
 	free(str);
 	//init_img(game, game->tab);
 	//print_tiles(game, game->tab);
 	//mlx_loop(game->mlx);
-	print_map(game ->tab);
+	//print_map(game->tab);
+	game->tab2 = add_border(game);
+	print_map(game->tab2);
 	free(game);
 	return (0);
 } 

@@ -22,6 +22,7 @@ typedef struct s_game{
     char    is_player;
     int     fd;
     char    **tab;
+    char    **tab2;
     t_player        player;
 
 }   t_game;
