@@ -167,64 +167,130 @@ int	ft_strcmp(const char *s1, const char *s2)
 	return (0);
 }
 
-int add_value(t_game *game, char *str)
+char	*ft_strldup(char *source, int size)
 {
-	int i;
-	char **tab;
-	int nb_color;
-	int texure;
+	char	*dest;
+	int		len;
+	int		i;
 
-	(void) game ;
-	texure = 0;
-	nb_color = 0;
+	if (!source)
+		return (NULL);
 	i = 0;
-	tab = ft_split(str, ' ');
-	while (tab[i])
+	len = ft_strlen(source);
+	dest = (char *) malloc(1 + len * sizeof(char));
+	if (dest == NULL)
+		return (NULL);
+	while (i < len && i != size)
 	{
-		if (ft_strcmp(tab[i], "NO") == 0)
-		{
-			game->NO_texture = ft_strdup(tab[i + 1]);
-			texure++;
-		}
-		else if (ft_strcmp(tab[i], "SO") == 0)
-		{
-			game->SO_texture = ft_strdup(tab[i++]);
-			texure++;
-		}
-		else if (ft_strcmp(tab[i], "WE") == 0)
-		{
-			game->WE_texture = ft_strdup(tab[i++]);
-			texure++;
-		}
-		else if (ft_strcmp(tab[i], "EA") == 0)
-		{
-			game->EA_texture = ft_strdup(tab[i++]);
-			texure++;
-		}
-		else if (ft_strcmp(tab[i], "F") == 0)
-		{
-			while(ft_strcmp(tab[i], ",") || ft_isnum(tab[i]))
-			{
-				game->floor_rgb = ft_strjoin(tab[i], ",");
-				i++;
-			}
-		}
-		else if (ft_strcmp(tab[i], "C") == 0)
-		{
-			while(ft_strcmp(tab[i], ",") || ft_isnum(tab[i]))
-			{
-				game->ceiling_rgb = ft_strjoin(tab[i], ",");
-				i++;
-			}
-		}
+		dest[i] = source[i];
 		i++;
 	}
-	return (0);
+	dest[i] = '\0';
+	return (dest);
+}
+
+void parse_settings(t_game *game)
+{
+	char 	**tab;
+	char 	*str;
+	char	*compas = NULL;
+	int		i = 0;
+
+	tab = game->tab;
+	while(tab[i])
+	{
+		str = ft_strtrim(tab[i], " ");
+		if (!str)
+			throw_error3(game, *tab);
+		if (ft_strlen(str) <= 4)
+			throw_error3(game, *tab);
+		else
+			compas = ft_strldup(str, 2);
+		if (!compas)
+			throw_error3(game, *tab);
+		if (!ft_strcmp(compas, "NO"))
+		{
+			str = ft_substr(str, 2, ft_strlen(str) - 2);
+			if (game->NO_texture)
+				throw_error3(game, *tab);
+			game->NO_texture = ft_strtrim(str, " ");
+		}
+		else if (!ft_strcmp(compas, "SO"))
+		{
+			str = ft_substr(str, 2, ft_strlen(str) - 2);
+			if (game->SO_texture)
+				throw_error3(game, *tab);
+			game->SO_texture = ft_strtrim(str, " ");
+		}
+		else if (!ft_strcmp(compas, "WE"))
+		{
+			str = ft_substr(str, 2, ft_strlen(str) - 2);
+			if (game->WE_texture)
+				throw_error3(game, *tab);
+			game->WE_texture = ft_strtrim(str, " ");
+		}
+		else if (!ft_strcmp(compas, "EA"))
+		{
+			str = ft_substr(str, 2, ft_strlen(str) - 2);
+			if (game->EA_texture)
+				throw_error3(game, *tab);
+			game->EA_texture = ft_strtrim(str, " ");
+		}
+		else
+			break ;
+		i++;
+	}
+}
+
+
+void parse_settings2(t_game *game)
+{
+	char 	**tab;
+	char 	*str;
+	char	*compas = NULL;
+	int		i = 0;
+
+	tab = game->tab;
+	while(tab[i])
+	{
+		str = ft_strtrim(tab[i], " ");
+		if (!str)
+			throw_error3(game, *tab);
+		if (ft_strlen(str) <= 4)
+			throw_error3(game, *tab);
+		else
+			compas = ft_strldup(str, 1);
+		if (!compas)
+			throw_error3(game, *tab);
+		if (!ft_strcmp(compas, "F"))
+		{
+			str = ft_substr(str, 1, ft_strlen(str) - 1);
+			if (game->floor_rgb)
+				throw_error3(game, *tab);
+			game->floor_rgb = ft_strtrim(str, " ");
+		}
+		else if (!ft_strcmp(compas, "C"))
+		{
+			str = ft_substr(str, 1, ft_strlen(str) - 1);
+			if (game->ceiling_rgb)
+				throw_error3(game, *tab);
+			game->ceiling_rgb = ft_strtrim(str, " ");
+		}
+		else
+			break ;
+		i++;
+	}
 }
 
 void	struct_init(t_game *game, char *file)
 {
 	game->x = 0;
+	game->NO_texture = NULL;
+	game->SO_texture = NULL;
+	game->EA_texture = NULL;
+	game->WE_texture = NULL;
+	game->floor_rgb = NULL;
+	game->ceiling_rgb = NULL;
 	game-> truc_parse = 0;
 	game->texture =0;
 	game->y = 0;
