@@ -14,6 +14,8 @@ typedef struct s_game{
     char    is_player;
     int     fd;
     char    **tab;
+    char    **tab2;
+    char    **tab3;
     char    *NO_texture;
     char    *SO_texture;
     char    *WE_texture;

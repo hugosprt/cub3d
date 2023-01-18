@@ -1,16 +1,15 @@
 #include "../includes/cub.h"
 
-void print_map(char **map)
+void print_map(t_game *game)
 {
 	int i = 0;
 	int j = 0;
-
-	while (map[j])
+	while (game->tab3[j])
 	{
 		i = 0;
-		while (map[j][i])
+		while (game->tab3[j][i])
 		{
-			printf("%c", map[j][i]);
+			printf("%c", game->tab3[j][i]);
 			i++;
 		}
 		printf("\n");
@@ -39,10 +38,11 @@ int	main(int ac, char **av)
 	//print_tiles(game, game->tab);
 	//mlx_loop(game->mlx);
 	//print_map(game->tab);
-	game->tab = add_border(game);
+	game->tab2 = add_border(game);
 	parse_settings(game);
+	game->tab3 = final_map(game);
 	printf("texture nord |%s| \ntexture sud |%s| \ntexture west |%s| \ntexture east |%s| \ncouleur sol |%s| \ncouleur ciel |%s| \n" , game->NO_texture, game->SO_texture, game->WE_texture ,game->EA_texture, game->floor_rgb,game->ceiling_rgb);
-	//print_map(game->tab);
+	print_map(game);
 	free(game);
 	return (0);
 } 

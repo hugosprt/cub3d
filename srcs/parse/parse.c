@@ -48,12 +48,8 @@ int     find_longer_line(char   **map)
 int     find_longer_collum(char   **map)
 {
     int i;
-    int j;
-    int size;
 
-    size = 0;
     i = 0;
-    j = 0;
 
     while (map[i])
     {
@@ -110,7 +106,7 @@ char **add_border(t_game *game)
             k++;
         }
         j++;
-    } 
+    }
     return (new_map);    
 }
 
@@ -194,9 +190,10 @@ void parse_settings(t_game *game)
 	char 	**tab;
 	char 	*str;
 	char	*compas = NULL;
+	char *compas2 = NULL;
 	int		i = 0;
 
-	tab = game->tab;
+	tab = game->tab2;
 	while(tab[i])
 	{
 		str = ft_strtrim(tab[i], " ");
@@ -205,7 +202,10 @@ void parse_settings(t_game *game)
 		if (ft_strlen(str) <= 4)
 			throw_error3(game, *tab);
 		else
+		{
+			compas2 = ft_strldup(str, 1);
 			compas = ft_strldup(str, 2);
+		}
 		if (!compas)
 			throw_error3(game, *tab);
 		if (!ft_strcmp(compas, "NO"))
@@ -214,6 +214,7 @@ void parse_settings(t_game *game)
 			if (game->NO_texture)
 				throw_error3(game, *tab);
 			game->NO_texture = ft_strtrim(str, " ");
+			game->truc_parse++;
 		}
 		else if (!ft_strcmp(compas, "SO"))
 		{
@@ -221,6 +222,7 @@ void parse_settings(t_game *game)
 			if (game->SO_texture)
 				throw_error3(game, *tab);
 			game->SO_texture = ft_strtrim(str, " ");
+			game->truc_parse++;
 		}
 		else if (!ft_strcmp(compas, "WE"))
 		{
@@ -228,6 +230,7 @@ void parse_settings(t_game *game)
 			if (game->WE_texture)
 				throw_error3(game, *tab);
 			game->WE_texture = ft_strtrim(str, " ");
+			game->truc_parse++;
 		}
 		else if (!ft_strcmp(compas, "EA"))
 		{
@@ -235,52 +238,65 @@ void parse_settings(t_game *game)
 			if (game->EA_texture)
 				throw_error3(game, *tab);
 			game->EA_texture = ft_strtrim(str, " ");
+			game->truc_parse++;
 		}
-		else
-			break ;
-		i++;
-	}
-}
-
-
-void parse_settings2(t_game *game)
-{
-	char 	**tab;
-	char 	*str;
-	char	*compas = NULL;
-	int		i = 0;
-
-	tab = game->tab;
-	while(tab[i])
-	{
-		str = ft_strtrim(tab[i], " ");
-		if (!str)
-			throw_error3(game, *tab);
-		if (ft_strlen(str) <= 4)
-			throw_error3(game, *tab);
-		else
-			compas = ft_strldup(str, 1);
-		if (!compas)
-			throw_error3(game, *tab);
-		if (!ft_strcmp(compas, "F"))
+		else if (!ft_strcmp(compas2, "F"))
 		{
 			str = ft_substr(str, 1, ft_strlen(str) - 1);
 			if (game->floor_rgb)
 				throw_error3(game, *tab);
 			game->floor_rgb = ft_strtrim(str, " ");
+			game->truc_parse++;
 		}
-		else if (!ft_strcmp(compas, "C"))
+		else if (!ft_strcmp(compas2, "C"))
 		{
 			str = ft_substr(str, 1, ft_strlen(str) - 1);
 			if (game->ceiling_rgb)
 				throw_error3(game, *tab);
 			game->ceiling_rgb = ft_strtrim(str, " ");
+			game->truc_parse++;
 		}
+		else if (game->truc_parse != 6)
+			throw_error3(game, *tab);
 		else
 			break ;
 		i++;
 	}
+	
 }
+
+char	**final_map(t_game *game)
+{
+	int k;
+    int j;
+    char *str;
+    char **new_map;
+
+    j = 6;
+    new_map = malloc(sizeof(char **) * (find_longer_collum(game->tab) - 6));
+    while (j < find_longer_collum(game->tab2))
+    {
+        k = 0;
+		if (!ft_isdigit(game->tab2[j][0]) && game->tab2[j][0] != ' ')
+		{
+			printf("%c\n", game->tab2[j][0]);
+			throw_error3(game, *new_map);
+		}
+        str = ft_strdup(game->tab2[j]);
+        new_map[j - 6] = ft_strdup(str);
+        k = ft_strlen(str);
+        while (k < find_longer_line(game->tab2))
+        {
+            new_map[j] = ft_strjoin4(new_map[j], " ");
+            k++;
+        }
+        j++;
+    }
+	return (new_map);
+
+
+}
+
 
 void	struct_init(t_game *game, char *file)
 {
