@@ -1,6 +1,6 @@
 #include "../includes/cub.h"
 
-static int	ft_tablen(char **tab)
+int	ft_tablen(char **tab)
 {
 	int	i;
 
@@ -55,8 +55,8 @@ void	init_game(t_game *g)
 	g->sky_color = 0x0000FF00;
 	g->ground_color = 0x000000FF;
 	g->fov = 60 * (PI / 180);
-	g->wwidth = ft_strlen(g->tab[0]) * g->ts;
-	g->wheight = ft_tablen(g->tab) * g->ts;
+	g->wwidth = 1200;
+	g->wheight = 800;
 	g->p = malloc(sizeof(t_player));
 	g->p->x = 0;
 	g->p->y = 0;
