@@ -13,6 +13,7 @@
 # include <stddef.h>
 # include <fcntl.h>
 # include <sys/wait.h>
+# include <math.h>
 # include "struct.h"
 # include "../libft/libft.h"
 # include "../srcs/gnl/get_next_line.h"
@@ -20,11 +21,5 @@
 # include "../minilibx/mlx.h"
 
 # define BUFFER_SIZE 1
-
-enum {
-	WALL,
-	WALL2
-};
-
 
 #endif

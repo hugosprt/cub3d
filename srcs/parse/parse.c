@@ -12,7 +12,6 @@ void    parse(char *file, t_game *game)
         parse_error();
     game->ground_color = 0;
     game->sky_color = 0;
-    game->size = 3;
    // parse_game(fd, &line, game);
 }
 

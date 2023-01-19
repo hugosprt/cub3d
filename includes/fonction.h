@@ -1,28 +1,26 @@
 #ifndef FONCTION_H
 # define FONCTION_H
 
-
 /* MAIN.C.C */
 
-void    parse_error();
-void    parse(char *file, t_game *game);
+void	parse_error(void);
+
+void	parse(char *file, t_game *game);
 
 /* DISPLAY.C */
 
-void	init_img(t_game *g, char **tab);
+void	init_game(t_game *g);
 
 void	finish(t_game *g);
 
 void	print_tiles(t_game *a, char **tab);
 
+int		render(t_game *g);
+
 /* I_LIKE_TO_MOVE_IT.C */
 
-void	move_up(t_game *root, int n);
+void	update_player(t_game *g);
 
-void	move_right(t_game *root, int n);
-
-void	rotate(t_game *root, int n);				
-
-
+int		is_new_pos_lava(t_game *g, float x, float y);
 
 #endif
