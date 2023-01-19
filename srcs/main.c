@@ -41,8 +41,9 @@ int	main(int ac, char **av)
 	game->tab2 = add_border(game);
 	parse_settings(game);
 	game->tab3 = final_map(game);
-	printf("texture nord |%s| \ntexture sud |%s| \ntexture west |%s| \ntexture east |%s| \ncouleur sol |%s| \ncouleur ciel |%s| \n" , game->NO_texture, game->SO_texture, game->WE_texture ,game->EA_texture, game->floor_rgb,game->ceiling_rgb);
-	print_map(game);
+	is_collunm(game);
+	//printf("texture nord |%s| \ntexture sud |%s| \ntexture west |%s| \ntexture east |%s| \ncouleur sol |%s| \ncouleur ciel |%s| \n" , game->NO_texture, game->SO_texture, game->WE_texture ,game->EA_texture, game->floor_rgb,game->ceiling_rgb);
+	//print_map(game);
 	free(game);
 	return (0);
 } 

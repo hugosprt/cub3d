@@ -25,6 +25,13 @@ void	throw_error3(t_game *game, char *tab)
 	exit(EXIT_FAILURE);
 }
 
+void	throw_error4(t_game *game)
+{
+	ft_printf("error map2\n");
+	free(game);
+	exit(EXIT_FAILURE);
+}
+
 int     find_longer_line(char   **map)
 {
     int i;
@@ -277,9 +284,8 @@ char	**final_map(t_game *game)
     while (j < find_longer_collum(game->tab2))
     {
         k = 0;
-		if (!ft_isdigit(game->tab2[j][0]) && game->tab2[j][0] != ' ')
+		if (game->tab2[j][0] != '1' && game->tab2[j][0] != ' ')
 		{
-			printf("%c\n", game->tab2[j][0]);
 			throw_error3(game, *new_map);
 		}
         str = ft_strdup(game->tab2[j]);
@@ -293,10 +299,42 @@ char	**final_map(t_game *game)
         j++;
     }
 	return (new_map);
-
-
 }
 
+void is_collunm(t_game *game)
+{
+	int i;
+	int j;
+	int	size;
+
+	size = find_longer_collum(game->tab3);
+	i = 0;
+	j = 0;
+	while(game->tab3[j])
+	{
+		i = 0;
+	//	printf("%c\n",game->tab3[i][j]);
+		while (game->tab3[i][j] != '1')
+		{
+		//	printf("%c\n",game->tab3[i][j]);
+			if (game->tab3[i][j] != ' ')
+			{
+				throw_error4(game);
+			}
+			i++;
+		}
+	//	printf("%c\n",game->tab3[i][j]);
+		i = 0;
+		while (game->tab3[size - i - 1][j] != '1')
+		{
+			printf("%c\n",game->tab3[size - i - 1][j]);
+			if (game->tab3[size - i - 1][j] != ' ')
+				throw_error4(game);
+			i++;
+		}
+		j++;
+	}
+}
 
 void	struct_init(t_game *game, char *file)
 {

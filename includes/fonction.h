@@ -9,5 +9,6 @@ char **add_border(t_game *game);
 int add_value(t_game *game, char *str);
 void parse_settings(t_game *game);
 char	**final_map(t_game *game);
+void is_collunm(t_game *game);
 
 #endif
