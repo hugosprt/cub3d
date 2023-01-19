@@ -27,6 +27,8 @@ typedef struct s_game{
 	float		step_speed;
 	int			rotation_speed;
 	float		rad;
+	float		fov;
+	float		distance;
 	int			x;
 	int			y;
 	int			dy;

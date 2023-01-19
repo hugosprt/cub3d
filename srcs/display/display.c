@@ -57,7 +57,7 @@ void	ft_init_bsh(t_game *v, int fx, int fy)
 		v->er = -v->dy / 2;
 }
 
-void	ft_bsh(t_game *v, int fx, int fy, unsigned int color)
+void	ft_bsh_print(t_game *v, int fx, int fy, unsigned int color)
 {
 	int	x;
 	int	y;
@@ -70,6 +70,35 @@ void	ft_bsh(t_game *v, int fx, int fy, unsigned int color)
 		img_put_pixel(x, y, v, color);
 		if ((x == fx && y == fy) || is_new_pos_lava(v, x, y))
 			break ;
+		v->e2 = v->er;
+		if (v->e2 > -v->dx)
+		{
+			v->er -= v->dy;
+			x += v->sx;
+		}
+		if (v->e2 < v->dy)
+		{
+			v->er += v->dx;
+			y += v->sy;
+		}
+	}
+}
+
+void	ft_bsh_distance(t_game *v, int fx, int fy)
+{
+	int	x;
+	int	y;
+
+	ft_init_bsh(v, fx, fy);
+	x = v->p->x;
+	y = v->p->y;
+	while (1)
+	{
+		if (is_new_pos_lava(v, x, y))
+		{
+			v->distance = sqrt(((x - v->p->x) * (x - v->p->x)) + ((y - v->p->y) * (y - v->p->y)));
+			break ;
+		}
 		v->e2 = v->er;
 		if (v->e2 > -v->dx)
 		{
@@ -99,7 +128,7 @@ void	fov(t_game *g, unsigned int color)
 	{
 		x = g->p->x - (cos(firstrad) * 1000);
 		y = g->p->y - (sin(firstrad) * 1000);
-		ft_bsh(g, x, y, color);
+		ft_bsh_print(g, x, y, color);
 		firstrad += step;
 	}
 }
@@ -127,8 +156,9 @@ void	player_render(t_game *g, unsigned int color)
 	fov(g, color);
 }
 
-void	print_tiles(t_game *g, char **tab)
+void	print_map(t_game *g, char **tab)
 {
+	g->p->i = 1;
 	g->y = -1;
 	while (tab[++g->y])
 	{
@@ -139,21 +169,71 @@ void	print_tiles(t_game *g, char **tab)
 				rectangle_tilesize(g, 0x0000FF00);
 			if (tab[g->y][g->x] == '0')
 				rectangle_tilesize(g, 0x000000FF);
-			if (tab[g->y][g->x] == 'N')
-			{
-				tab[g->y][g->x] = '0';
-				rectangle_tilesize(g, 0x000000FF);
-				g->p->x = (g->x * g->ts) + (g->ts / 2);
-				g->p->y = (g->y * g->ts) + (g->ts / 2);
-				g->p->i = 1;
-				g->p->a = 90;
-				ft_printf("player posi_x%d___new_y%d\n", g->p->x, g->p->y);
-				ft_printf("player angle%d\n", g->p->a);
-				g->rad = (90 * (PI / 180));
-			}
 		}
 	}
 	player_render(g, 0x00FF0000);
+}
+
+int	color_depth(t_game *g)
+{
+	int	color;
+	int	white;
+
+	color = 0;
+	white = 255 - (200 * (g->distance / g->wheight));
+	color |= white << 16;
+	color |= white << 8;
+	color |= white;
+	return (color);
+}
+
+void	draw_ray(t_game *g, int i, float ray_angle)
+{
+	int		y;
+	int		y_start;
+	int		y_finish;
+	int		wall_height;
+	float	projection_plane;
+
+	g->distance = cos(ray_angle - g->rad) * g->distance;
+	projection_plane = ((g->wwidth / 2) / tan((g->fov / 2)));
+	wall_height = (g->ts / g->distance) * projection_plane;
+	y = 0;
+	y_start = (g->wheight / 2) - (wall_height / 2);
+	y_finish = (g->wheight / 2) + (wall_height / 2);
+	while (y < g->wheight)
+	{
+		if (y < y_start)
+			img_put_pixel(i, y, g, g->sky_color);
+		if (y >= y_start && y <= y_finish)
+			img_put_pixel(i, y, g, color_depth(g));
+		if (y > y_finish)
+			img_put_pixel(i, y, g, g->ground_color);
+		y++;
+	}
+}
+
+void ray_cast(t_game *g)
+{
+	int		x;
+	int		y;
+	int		i;
+	float	firstrad;
+	float	step;
+
+	g->p->i = 1;
+	step = (60 * (PI / 180)) / g->wwidth;
+	firstrad = g->rad - (step * (g->wwidth / 2));
+	i = 0;
+	while (i < g->wwidth)
+	{
+		x = g->p->x - (cos(firstrad) * 1000);
+		y = g->p->y - (sin(firstrad) * 1000);
+		ft_bsh_distance(g, x, y);
+		draw_ray(g, i, firstrad);
+		firstrad += step;
+		i++;
+	}
 }
 
 int	render(t_game *g)
@@ -166,7 +246,8 @@ int	render(t_game *g)
 	if (!g->img)
 		return (ft_putstr_fd("Error\n", 2), 1);
 	g->adr = mlx_get_data_addr(g->img, &g->bitsz, &g->lsz, &g->endi);
-	print_tiles(g, g->tab);
+	//print_map(g, g->tab);
+	ray_cast(g);
 	mlx_put_image_to_window(g->mlx, g->win, g->img, 0, 0);
 	mlx_destroy_image(g->mlx, g->img);
 	return (0);
