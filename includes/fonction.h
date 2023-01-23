@@ -17,7 +17,7 @@ void	is_line_right(t_game *game);
 void	if_zero(t_game *game);
 void	is_player(t_game *game);
 void main_parsing(t_game *game); 
-
+void print_map2(t_game *game);
 /* MAIN.C.C */
 
 void	parse_error(void);
