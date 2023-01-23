@@ -246,7 +246,7 @@ int	render(t_game *g)
 	if (!g->img)
 		return (ft_putstr_fd("Error\n", 2), 1);
 	g->adr = mlx_get_data_addr(g->img, &g->bitsz, &g->lsz, &g->endi);
-	// print_map(g, g->tab3);
+	//print_map(g, g->tab3);
 	ray_cast(g);
 	mlx_put_image_to_window(g->mlx, g->win, g->img, 0, 0);
 	mlx_destroy_image(g->mlx, g->img);
