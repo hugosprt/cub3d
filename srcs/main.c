@@ -171,10 +171,8 @@ t_game	*game;
 	(void) av;
 	game = malloc((sizeof (t_game)));
 	init_game(game, av[1]);
-	printf("here\n");
 	main_parsing(game);
-	printf("here\n");
-	print_map2(game);
+	//print_map2(game);
 	init_player_position(game, game->tab3);
 	if (ac != 2)
 		parse_error();

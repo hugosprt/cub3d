@@ -119,7 +119,7 @@ char **add_border(t_game *game)
     char **new_map;
 
     j = 0;
-    new_map = malloc(sizeof(char **) * (find_longer_collum(game->tab)));
+    new_map = malloc(sizeof(char **) * (find_longer_collum(game->tab) + 1));
     while (j < find_longer_collum(game->tab))
     {
         k = 0;
@@ -133,6 +133,7 @@ char **add_border(t_game *game)
         }
         j++;
     }
+	new_map[j] = NULL;
     return (new_map);    
 }
 
@@ -296,22 +297,20 @@ char	**final_map(t_game *game)
 	int k;
     int j;
     char *str;
-    char **new_map;
+	char **new_map;
 
     j = 6;
-    new_map = malloc(sizeof(char **) * (find_longer_collum(game->tab) - 6));
-    while (j < find_longer_collum(game->tab2))
+    new_map = malloc(sizeof(char **) * (find_longer_collum(game->tab2)) + 1);
+    while (j <  find_longer_collum(game->tab2))
     {
+
         k = 0;
-		// if (game->tab2[j][0] != '1' && game->tab2[j][0] != ' ')
-		// {
-		// 	throw_error3(game, *new_map);
-		// }
         str = ft_strdup(game->tab2[j]);
+		if (!str)
+			throw_error3(game, str);
         new_map[j - 6] = ft_strdup(str);
         k = ft_strlen(str);
-		
-        while (k <  find_longer_line(game->tab2))
+        while (k < find_longer_line(game->tab2))
         {
             new_map[j] = ft_strjoin4(new_map[j], " ");
             k++;
@@ -510,7 +509,7 @@ void main_parsing(t_game *game)
 	game->tab = ft_split(str, '\n');
 	game->tab2 = add_border(game);
 	parse_settings(game);
-	printf("texture nord |%s| \ntexture sud |%s| \ntexture west |%s| \ntexture east |%s| \ncouleur sol |%s| \ncouleur ciel |%s| \n" , game->NO_texture, game->SO_texture, game->WE_texture ,game->EA_texture, game->floor_rgb,game->ceiling_rgb);
+//	printf("texture nord |%s| \ntexture sud |%s| \ntexture west |%s| \ntexture east |%s| \ncouleur sol |%s| \ncouleur ciel |%s| \n" , game->NO_texture, game->SO_texture, game->WE_texture ,game->EA_texture, game->floor_rgb,game->ceiling_rgb);
 	game->tab3 = final_map(game);
 	if_zero(game);
 	is_collunm_top(game);
