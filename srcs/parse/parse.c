@@ -488,6 +488,23 @@ void	is_player(t_game *game)
 	}
 }
 
+void main_parsing(t_game *game)
+{
+	char *str;
+
+	str = parse(game);
+	game->tab = ft_split(str, '\n');
+	game->tab2 = add_border(game);
+	parse_settings(game);
+	game->tab3 = final_map(game);
+	if_zero(game);
+	is_collunm_top(game);
+	is_collunm_bot(game);
+	is_line_left(game);
+	is_line_right(game);
+	is_player(game);
+}
+
 void	struct_init(t_game *game, char *file)
 {
 	game->x = 0;

@@ -22,7 +22,6 @@ void print_map(t_game *game)
 int	main(int ac, char **av)
 {
 	t_game	*game;
-	char	*str;
 
 	if (ac != 2)
 	{
@@ -31,24 +30,9 @@ int	main(int ac, char **av)
 	}
 	game = malloc(sizeof(t_game));
 	struct_init(game, av[1]);
-	str = parse(game);
-	game->tab = ft_split(str, '\n');
-	free(str);
-	//init_img(game, game->tab);
-	//print_tiles(game, game->tab);
-	//mlx_loop(game->mlx);
-	//print_map(game->tab);
-	game->tab2 = add_border(game);
-	parse_settings(game);
-	game->tab3 = final_map(game);
-	if_zero(game);
-	is_collunm_top(game);
-	is_collunm_bot(game);
-	is_line_left(game);
-	is_line_right(game);
-	is_player(game);
+	main_parsing(game);
 	//printf("texture nord |%s| \ntexture sud |%s| \ntexture west |%s| \ntexture east |%s| \ncouleur sol |%s| \ncouleur ciel |%s| \n" , game->NO_texture, game->SO_texture, game->WE_texture ,game->EA_texture, game->floor_rgb,game->ceiling_rgb);
-	//print_map(game);
+	print_map(game);
 	free(game);
 	return (0);
 } 
