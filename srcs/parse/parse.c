@@ -32,6 +32,13 @@ void	throw_error4(t_game *game)
 	exit(EXIT_FAILURE);
 }
 
+void	throw_error66(t_game *game)
+{
+	ft_printf("on gere pas les pipes dans minishell t'as cru on allait faire un multi??\n");
+	free(game);
+	exit(EXIT_FAILURE);
+}
+
 int     find_longer_line(char   **map)
 {
     int i;
@@ -284,10 +291,10 @@ char	**final_map(t_game *game)
     while (j < find_longer_collum(game->tab2))
     {
         k = 0;
-		if (game->tab2[j][0] != '1' && game->tab2[j][0] != ' ')
-		{
-			throw_error3(game, *new_map);
-		}
+		// if (game->tab2[j][0] != '1' && game->tab2[j][0] != ' ')
+		// {
+		// 	throw_error3(game, *new_map);
+		// }
         str = ft_strdup(game->tab2[j]);
         new_map[j - 6] = ft_strdup(str);
         k = ft_strlen(str);
@@ -301,35 +308,180 @@ char	**final_map(t_game *game)
 	return (new_map);
 }
 
-void is_collunm(t_game *game)
+void is_collunm_top(t_game *game)
 {
 	int i;
 	int j;
 	int	size;
 
-	size = find_longer_collum(game->tab3);
+	size = find_longer_line(game->tab3);
 	i = 0;
 	j = 0;
-	while(game->tab3[j])
+	while(j != size)
 	{
 		i = 0;
 	//	printf("%c\n",game->tab3[i][j]);
 		while (game->tab3[i][j] != '1')
 		{
-		//	printf("%c\n",game->tab3[i][j]);
+			// printf("%c\n",game->tab3[i][j]);
+			// printf("i : %d  j : %d\n", i , j);
 			if (game->tab3[i][j] != ' ')
 			{
 				throw_error4(game);
 			}
 			i++;
 		}
+		j++;
+	}
+}
+
+void is_collunm_bot(t_game *game)
+{
+	int i;
+	int j;
+	int	size;
+	int s2;
+	size = find_longer_line(game->tab3);
+	s2 = find_longer_collum(game->tab3);
+	i = 0;
+	j = 0;
+	while(j != size)
+	{
+		i = 1;
 	//	printf("%c\n",game->tab3[i][j]);
-		i = 0;
-		while (game->tab3[size - i - 1][j] != '1')
+		while (game->tab3[s2 - i][j] != '1')
 		{
-			printf("%c\n",game->tab3[size - i - 1][j]);
-			if (game->tab3[size - i - 1][j] != ' ')
+			// printf("%c\n",game->tab3[s2 - i][j]);
+			// printf("i : %d  j : %d\n", s2 - i , j);
+			if (game->tab3[s2 - i][j] != ' ')
+			{
 				throw_error4(game);
+			}
+			i++;
+		}
+		j++;
+	}
+}
+
+void	is_line_left(t_game *game)
+{
+	int i; 
+	int j;
+
+	i = 0;
+	j = 0;
+
+	while (game->tab3[j])
+	{
+		i = 0;
+		while (game->tab3[j][i] != '1')
+		{
+			// printf("%c\n",game->tab3[j][i]);
+			// printf("i : %d  j : %d\n", i , j);
+			if (game->tab3[j][i] != ' ')
+			{
+				// printf("here\n");
+				throw_error4(game);
+			}
+			i++;
+		}
+		j++;
+	}
+}
+
+void	is_line_right(t_game *game)
+{
+	int i; 
+	int j;
+	int size;
+
+	size = find_longer_line(game->tab3);
+
+	i = 0;
+	j = 0;
+
+	while (game->tab3[j])
+	{
+		i = 1;
+		while (game->tab3[j][size - i] != '1')
+		{
+			// printf("%c\n",game->tab3[j][size - i]);
+			// printf("i : %d  j : %d\n", size - i , j);
+			if (game->tab3[j][size - i] != ' ')
+			{
+				// printf("here\n");
+				throw_error4(game);
+			}
+			i++;
+		}
+		j++;
+	}
+}
+
+int check_zero(t_game *game, int i, int j)
+{
+	if (!game->tab3[j][i + 1]  || game->tab3[j][i + 1] == ' ')
+		return (0);
+	if (!game->tab3[j][i - 1]  || game->tab3[j][i - 1] == ' ')
+		return (0);
+	if (!game->tab3[j - 1][i]  || game->tab3[j - 1][i] == ' ')
+		return (0);
+	return (1);
+}
+
+void	if_zero(t_game *game)
+{
+	int i; 
+	int j;
+
+	i = 0;
+	j = 0;
+
+	while (game->tab3[j])
+	{
+		i = 0;
+		while (game->tab3[j][i])
+		{
+			// printf("%c\n",game->tab3[j][i]);
+			// printf("i : %d  j : %d\n", i , j);
+			if (game->tab3[j][i] == '0')
+			{
+				if (!check_zero(game, i, j))
+				{
+					throw_error4(game);
+				}
+			}
+			i++;
+		}
+		j++;
+	}
+}
+
+void	is_player(t_game *game)
+{
+	int i; 
+	int j;
+
+	i = 0;
+	j = 0;
+
+	while (game->tab3[j])
+	{
+		i = 0;
+		while (game->tab3[j][i])
+		{
+			// printf("%c\n",game->tab3[j][i]);
+			// printf("i : %d  j : %d\n", i , j);
+			if (game->tab3[j][i] == 'N' || game->tab3[j][i] == 'S' || game->tab3[j][i] == 'E' || game->tab3[j][i] == 'W')
+			{
+				if (game->is_player != 'H')
+					throw_error66(game);
+				if (!check_zero(game, i, j))
+				{
+					throw_error4(game);
+				}
+				game->is_player = game->tab3[j][i];
+			}
 			i++;
 		}
 		j++;
@@ -348,7 +500,7 @@ void	struct_init(t_game *game, char *file)
 	game-> truc_parse = 0;
 	game->texture =0;
 	game->y = 0;
-	game->is_player = 1;
+	game->is_player = 'H';
 	game->is_valid = 1;
 	game->fd = open(file, O_RDONLY);
 }
