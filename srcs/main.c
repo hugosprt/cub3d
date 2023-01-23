@@ -57,8 +57,6 @@ void	init_game(t_game *g, char *file)
 	g->side = 0;
 	g->step = 0;
 	g->turn = 0;
-	g->sky_color = 0x0000FF00;
-	g->ground_color = 0x000000FF;
 	g->fov = 60 * (PI / 180);
 	g->wwidth = 1200;
 	g->wheight = 800;
