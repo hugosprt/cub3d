@@ -13,6 +13,7 @@
 # include <stddef.h>
 # include <fcntl.h>
 # include <sys/wait.h>
+# include <math.h>
 # include "struct.h"
 # include "../libft/libft.h"
 # include "../srcs/gnl/get_next_line.h"

@@ -1,19 +1,24 @@
 #ifndef STRUCT_H
 # define STRUCT_H
 
-typedef struct s_game{
+# define PI 3.141592653589793
 
-    void    *mlx;
-    void    *win;
+typedef struct s_player{
+	float	x;
+	float	y;
+	int		a;
+	int		i;
+}	t_player;
 
-    int x;
+typedef struct s_game {
+	 int x;
     int y;
-    int     ground_color;
-    int     sky_color;
+
     int     is_valid;
     char    is_player;
     int     fd;
     char    **tab;
+	char    **tab4;
     char    **tab2;
     char    **tab3;
     char    *NO_texture;
@@ -28,9 +33,33 @@ typedef struct s_game{
     int     SO;
     int     EA;
     int     WE;
-    int     F;
-    int     C;
-
-}   t_game;
+	void		*mlx;
+	void		*win;
+	void		*img;
+	int			lsz;
+	int			bitsz;
+	int			endi;
+	char		*adr;
+	int			ground_color;
+	int			sky_color;
+	t_player	*p;
+	int			ts;
+	int			wheight;
+	int			wwidth;
+	float		step_speed;
+	int			rotation_speed;
+	float		rad;
+	float		fov;
+	float		distance;
+	int			dy;
+	int			dx;
+	int			sx;
+	int			sy;
+	int			er;
+	int			e2;
+	int			step;
+	int			side;
+	int			turn;
+}	t_game;
 
 #endif

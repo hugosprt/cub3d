@@ -1,4 +1,15 @@
 #include "../../includes/cub.h"
+void	free_magic(t_game *g)
+{
+	int i;
+	i=0;
+	while (g->tab[i] != NULL)
+	{
+		free(g->tab[i]);
+		i++;
+	}
+	free(g->tab);
+}
 
 
 void	throw_error(t_game *game, char *tab)
@@ -99,6 +110,7 @@ char	*ft_strjoin4(char const *s1, char const *s2)
 	s3[i + j] = '\0';
 	return (s3);
 }
+
 char **add_border(t_game *game)
 {
     int k;
@@ -298,13 +310,15 @@ char	**final_map(t_game *game)
         str = ft_strdup(game->tab2[j]);
         new_map[j - 6] = ft_strdup(str);
         k = ft_strlen(str);
-        while (k < find_longer_line(game->tab2))
+		
+        while (k <  find_longer_line(game->tab2))
         {
             new_map[j] = ft_strjoin4(new_map[j], " ");
             k++;
         }
         j++;
     }
+	new_map[j] = NULL;
 	return (new_map);
 }
 
@@ -496,6 +510,7 @@ void main_parsing(t_game *game)
 	game->tab = ft_split(str, '\n');
 	game->tab2 = add_border(game);
 	parse_settings(game);
+	printf("texture nord |%s| \ntexture sud |%s| \ntexture west |%s| \ntexture east |%s| \ncouleur sol |%s| \ncouleur ciel |%s| \n" , game->NO_texture, game->SO_texture, game->WE_texture ,game->EA_texture, game->floor_rgb,game->ceiling_rgb);
 	game->tab3 = final_map(game);
 	if_zero(game);
 	is_collunm_top(game);
@@ -504,22 +519,4 @@ void main_parsing(t_game *game)
 	is_line_right(game);
 	is_player(game);
 }
-
-void	struct_init(t_game *game, char *file)
-{
-	game->x = 0;
-	game->NO_texture = NULL;
-	game->SO_texture = NULL;
-	game->EA_texture = NULL;
-	game->WE_texture = NULL;
-	game->floor_rgb = NULL;
-	game->ceiling_rgb = NULL;
-	game-> truc_parse = 0;
-	game->texture =0;
-	game->y = 0;
-	game->is_player = 'H';
-	game->is_valid = 1;
-	game->fd = open(file, O_RDONLY);
-}
-
 

@@ -1,4 +1,4 @@
-NAME        = cub3d 
+NAME        = cub3D 
 CC            = cc
 CFLAGS        = -Wall -Werror -Wextra -g
 # CFLAGS        += -fsanitize=address -g3
@@ -6,7 +6,9 @@ SRCS         = srcs/main.c \
 				srcs/gnl/get_next_line.c\
 				srcs/gnl/get_next_line_utils.c\
 				srcs/errors/error.c \
-				srcs/parse/parse.c
+				srcs/parse/parse.c \
+				srcs/display/display.c \
+				srcs/display/i_like_to_move_it.c \
 
 OBJS        = $(SRCS:.c=.o)
 LIBFT        = libft/libft.a
