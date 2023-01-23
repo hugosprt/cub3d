@@ -45,6 +45,9 @@ void	init_game(t_game *g, char *file)
 	g->WE_texture = NULL;
 	g->floor_rgb = NULL;
 	g->ceiling_rgb = NULL;
+	g->tab = NULL;
+	g->tab2 = NULL;
+	g->tab3 = NULL;
 	g-> truc_parse = 0;
 	g->texture =0;
 	g->y = 0;
@@ -72,12 +75,13 @@ void	finish(t_game *g)
 	int	i;
 
 	i = 0;
-	while (g->tab[i] != NULL)
-	{
-		free(g->tab[i]);
-		i++;
-	}
-	free(g->tab);
+	free_magic(g);
+	free(g->NO_texture);
+	free(g->SO_texture);
+	free(g->WE_texture);
+	free(g->EA_texture);
+	free(g->floor_rgb);
+	free(g->ceiling_rgb);
 	i = 0;
 	mlx_destroy_window(g->mlx, g->win);
 	mlx_destroy_display(g->mlx);
@@ -87,24 +91,6 @@ void	finish(t_game *g)
 	ft_printf("hop c fini\n");
 	exit(EXIT_SUCCESS);
 }
-
-// void	meke_tab(t_game *g)
-// {
-
-// 	g->tab = malloc(sizeof(char *) * 12);
-// 	g->tab[0] = ft_strdup("111111111111111");
-// 	g->tab[1] = ft_strdup("100000000110001");
-// 	g->tab[2] = ft_strdup("111100000000001");
-// 	g->tab[3] = ft_strdup("100000000011001");
-// 	g->tab[4] = ft_strdup("101111110000001");
-// 	g->tab[5] = ft_strdup("100110000000001");
-// 	g->tab[6] = ft_strdup("1000000N0000111");
-// 	g->tab[7] = ft_strdup("100000000011101");
-// 	g->tab[8] = ft_strdup("111100000000001");
-// 	g->tab[9] = ft_strdup("100000000000101");
-// 	g->tab[10] = ft_strdup("111111111111111");
-// 	g->tab[11] = NULL;
-// }
 
 static int	key_pressed(int keycode, t_game *game)
 {

@@ -9,6 +9,31 @@ void	free_magic(t_game *g)
 		i++;
 	}
 	free(g->tab);
+	i= 0;
+	while (g->tab2[i] != NULL)
+	{
+		free(g->tab2[i]);
+		i++;
+	}
+	free(g->tab2);
+	i = 0;
+	while (g->tab3[i] != NULL)
+	{
+		free(g->tab3[i]);
+		i++;
+	}
+	free(g->tab3);
+}
+void free_tab(char **tab)
+{
+	int i;
+	i=0;
+	while (tab[i] != NULL)
+	{
+		free(tab[i]);
+		i++;
+	}
+	free(tab);
 }
 
 
@@ -59,7 +84,6 @@ int     find_longer_line(char   **map)
     size = 0;
     i = 0;
     j = 0;
-
     while (map[i])
     {
         j = ft_strlen(map[i]);
@@ -111,30 +135,33 @@ char	*ft_strjoin4(char const *s1, char const *s2)
 	return (s3);
 }
 
-char **add_border(t_game *game)
+void add_border(t_game *game)
 {
     int k;
     int j;
     char *str;
-    char **new_map;
+	char *str2;
 
     j = 0;
-    new_map = malloc(sizeof(char **) * (find_longer_collum(game->tab) + 1));
+    game->tab2 = malloc(sizeof(char **) * (find_longer_collum(game->tab) + 1));
     while (j < find_longer_collum(game->tab))
     {
         k = 0;
         str = ft_strdup(game->tab[j]);
-        new_map[j] = ft_strdup(str);
+        game->tab2[j] = ft_strdup(str);
         k = ft_strlen(str);
+		free(str);
         while (k < find_longer_line(game->tab))
         {
-            new_map[j] = ft_strjoin4(new_map[j], " ");
+			str2 = game->tab2[j];
+			str = ft_strjoin4(str2, " ");
+            game->tab2[j] = str;
+			free(str2);
             k++;
         }
         j++;
     }
-	new_map[j] = NULL;
-    return (new_map);    
+	game->tab2[j] = NULL;   
 }
 
 char	*parse(t_game *game)
@@ -215,9 +242,9 @@ char	*ft_strldup(char *source, int size)
 void parse_settings(t_game *game)
 {
 	char 	**tab;
-	char 	*str;
+	char 	*str = NULL;
 	char	*compas = NULL;
-	char *compas2 = NULL;
+	char	*compas2 = NULL;
 	int		i = 0;
 
 	tab = game->tab2;
@@ -288,19 +315,23 @@ void parse_settings(t_game *game)
 		else
 			break ;
 		i++;
+		free(compas2);
+		free(compas);
+		free(str);
 	}
-	
+	free(compas2);
+	free(compas);
 }
 
-char	**final_map(t_game *game)
+void	final_map(t_game *game)
 {
 	int k;
     int j;
     char *str;
-	char **new_map;
+	char *str2;
 
     j = 6;
-    new_map = malloc(sizeof(char **) * (find_longer_collum(game->tab2)) + 1);
+    game->tab3 = malloc(sizeof(char **) * (find_longer_collum(game->tab2) + 1));
     while (j <  find_longer_collum(game->tab2))
     {
 
@@ -308,17 +339,19 @@ char	**final_map(t_game *game)
         str = ft_strdup(game->tab2[j]);
 		if (!str)
 			throw_error3(game, str);
-        new_map[j - 6] = ft_strdup(str);
+        game->tab3[j - 6] = ft_strdup(str);
         k = ft_strlen(str);
+		free(str);
         while (k < find_longer_line(game->tab2))
         {
-            new_map[j] = ft_strjoin4(new_map[j], " ");
+			str2 = game->tab3[j];
+            str = ft_strjoin4(str2, " ");
+			game->tab3[j] = str;
+			free(str2);
             k++;
         }
         j++;
     }
-	new_map[j] = NULL;
-	return (new_map);
 }
 
 void is_collunm_top(t_game *game)
@@ -333,15 +366,10 @@ void is_collunm_top(t_game *game)
 	while(j != size)
 	{
 		i = 0;
-	//	printf("%c\n",game->tab3[i][j]);
 		while (game->tab3[i][j] != '1')
 		{
-			// printf("%c\n",game->tab3[i][j]);
-			// printf("i : %d  j : %d\n", i , j);
 			if (game->tab3[i][j] != ' ')
-			{
 				throw_error4(game);
-			}
 			i++;
 		}
 		j++;
@@ -412,14 +440,11 @@ void	is_line_right(t_game *game)
 
 	i = 0;
 	j = 0;
-
 	while (game->tab3[j])
 	{
 		i = 1;
 		while (game->tab3[j][size - i] != '1')
 		{
-			// printf("%c\n",game->tab3[j][size - i]);
-			// printf("i : %d  j : %d\n", size - i , j);
 			if (game->tab3[j][size - i] != ' ')
 			{
 				// printf("here\n");
@@ -477,14 +502,11 @@ void	is_player(t_game *game)
 
 	i = 0;
 	j = 0;
-
 	while (game->tab3[j])
 	{
 		i = 0;
 		while (game->tab3[j][i])
 		{
-			// printf("%c\n",game->tab3[j][i]);
-			// printf("i : %d  j : %d\n", i , j);
 			if (game->tab3[j][i] == 'N' || game->tab3[j][i] == 'S' || game->tab3[j][i] == 'E' || game->tab3[j][i] == 'W')
 			{
 				if (game->is_player != 'H')
@@ -502,9 +524,9 @@ void	is_player(t_game *game)
 }
 
 int check_valid_input(const char* s, int* r, int* g, int* b) {
-    int i = 0, j = 0, k = 0;
+    int i = 0, j = 0, k = 0, l = 0;
     while (s[i] != ',' && s[i] != '\0') {
-        if (s[i] >= '0' && s[i] <= '9') {
+        if (ft_isdigit(s[i])) {
             *r = (*r * 10) + (s[i] - '0');
             j++;
         }
@@ -518,12 +540,13 @@ int check_valid_input(const char* s, int* r, int* g, int* b) {
     }
     i++;
     while (s[i] != ',' && s[i] != '\0') {
-        if (s[i] >= '0' && s[i] <= '9') {
+        if (ft_isdigit(s[i])) {
             *g = (*g * 10) + (s[i] - '0');
             k++;
         }
-        else
+        else {
             return -1;
+        }
         i++;
     }
     if (s[i] == '\0' || k==0) {
@@ -531,14 +554,16 @@ int check_valid_input(const char* s, int* r, int* g, int* b) {
     }
     i++;
     while (s[i] != '\0') {
-        if (s[i] >= '0' && s[i] <= '9') {
+        if (ft_isdigit(s[i])) {
             *b = (*b * 10) + (s[i] - '0');
+            l++;
         }
         else {
             return -1;
         }
         i++;
     }
+    if(j==0 || k==0 || l==0) return -1;
     return 0;
 }
 int parse_rgb_color(t_game *game, char *s) {
@@ -550,19 +575,21 @@ int parse_rgb_color(t_game *game, char *s) {
         throw_error4(game);
     }
     return (r << 16) | (g << 8) | b;
-}
 
+}
 
 void main_parsing(t_game *game)
 {
 	char *str;
+//	char **temp;
 
 	str = parse(game);
 	game->tab = ft_split(str, '\n');
-	game->tab2 = add_border(game);
+	free(str);
+	add_border(game);
 	parse_settings(game);
 //	printf("texture nord |%s| \ntexture sud |%s| \ntexture west |%s| \ntexture east |%s| \ncouleur sol |%s| \ncouleur ciel |%s| \n" , game->NO_texture, game->SO_texture, game->WE_texture ,game->EA_texture, game->floor_rgb,game->ceiling_rgb);
-	game->tab3 = final_map(game);
+	final_map(game);
 	if_zero(game);
 	is_collunm_top(game);
 	is_collunm_bot(game);
