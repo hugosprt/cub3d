@@ -1,14 +1,6 @@
 #ifndef STRUCT_H
 # define STRUCT_H
 
-typedef enum e_player{
-	N = 'N',
-	S = 'S',
-	E = 'E',
-	W = 'W',
-
-}	t_player;
-
 typedef struct s_game{
 
     void    *mlx;
@@ -22,7 +14,22 @@ typedef struct s_game{
     char    is_player;
     int     fd;
     char    **tab;
-    t_player        player;
+    char    **tab2;
+    char    **tab3;
+    char    *NO_texture;
+    char    *SO_texture;
+    char    *WE_texture;
+    char    *EA_texture;
+    int     texture;
+    char    *floor_rgb;
+    char     *ceiling_rgb;
+    int     truc_parse;
+    int     NO;
+    int     SO;
+    int     EA;
+    int     WE;
+    int     F;
+    int     C;
 
 }   t_game;
 
