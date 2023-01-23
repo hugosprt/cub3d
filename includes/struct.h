@@ -27,7 +27,7 @@ typedef struct s_game {
     char    *EA_texture;
     int     texture;
     char    *floor_rgb;
-    char     *ceiling_rgb;
+    char    *ceiling_rgb;
     int     truc_parse;
     int     NO;
     int     SO;

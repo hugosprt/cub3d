@@ -501,6 +501,58 @@ void	is_player(t_game *game)
 	}
 }
 
+int check_valid_input(const char* s, int* r, int* g, int* b) {
+    int i = 0, j = 0, k = 0;
+    while (s[i] != ',' && s[i] != '\0') {
+        if (s[i] >= '0' && s[i] <= '9') {
+            *r = (*r * 10) + (s[i] - '0');
+            j++;
+        }
+        else {
+            return -1;
+        }
+        i++;
+    }
+    if (s[i] == '\0' || j==0) {
+        return -1;
+    }
+    i++;
+    while (s[i] != ',' && s[i] != '\0') {
+        if (s[i] >= '0' && s[i] <= '9') {
+            *g = (*g * 10) + (s[i] - '0');
+            k++;
+        }
+        else
+            return -1;
+        i++;
+    }
+    if (s[i] == '\0' || k==0) {
+        return -1;
+    }
+    i++;
+    while (s[i] != '\0') {
+        if (s[i] >= '0' && s[i] <= '9') {
+            *b = (*b * 10) + (s[i] - '0');
+        }
+        else {
+            return -1;
+        }
+        i++;
+    }
+    return 0;
+}
+int parse_rgb_color(t_game *game, char *s) {
+    int r = 0, g = 0, b = 0;
+    if(check_valid_input(s,&r,&g,&b) == -1){
+        throw_error4(game);
+    }
+    if (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255) {
+        throw_error4(game);
+    }
+    return (r << 16) | (g << 8) | b;
+}
+
+
 void main_parsing(t_game *game)
 {
 	char *str;
@@ -517,5 +569,7 @@ void main_parsing(t_game *game)
 	is_line_left(game);
 	is_line_right(game);
 	is_player(game);
+	game->sky_color = parse_rgb_color(game, game->ceiling_rgb);
+	game->ground_color = parse_rgb_color(game, game->floor_rgb);
 }
 
