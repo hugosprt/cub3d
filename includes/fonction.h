@@ -5,14 +5,14 @@
 void    parse_error();
 char    *parse(t_game *game);
 void	struct_init(t_game *game, char *file);
-
+void	final_map(t_game *game);
 int add_value(t_game *game, char *str);
 void parse_settings(t_game *game);
 void is_collunm_top(t_game *game);
 void is_collunm_bot(t_game *game);
 void	is_line_left(t_game *game);
 void	is_line_right(t_game *game);
-void	if_zero(t_game *game);
+void	if_zero(t_game *game, char **tab3);
 void	is_player(t_game *game);
 void main_parsing(t_game *game); 
 void print_map2(t_game *game);

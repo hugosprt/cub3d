@@ -327,14 +327,16 @@ void	final_map(t_game *game)
 {
 	int k;
     int j;
-    char *str;
+    char *str = NULL;
 	char *str2;
 
+	
     j = 6;
-    game->tab3 = malloc(sizeof(char **) * (find_longer_collum(game->tab2) + 1));
+	game->tab3 = malloc(sizeof(char **) * (find_longer_collum(game->tab) - 5));
+	if (!game->tab3)
+		return ;
     while (j <  find_longer_collum(game->tab2))
     {
-
         k = 0;
         str = ft_strdup(game->tab2[j]);
 		if (!str)
@@ -342,6 +344,7 @@ void	final_map(t_game *game)
         game->tab3[j - 6] = ft_strdup(str);
         k = ft_strlen(str);
 		free(str);
+		str = NULL;
         while (k < find_longer_line(game->tab2))
         {
 			str2 = game->tab3[j];
@@ -352,6 +355,7 @@ void	final_map(t_game *game)
         }
         j++;
     }
+	game->tab3[j - 6] = NULL;
 }
 
 void is_collunm_top(t_game *game)
@@ -382,6 +386,7 @@ void is_collunm_bot(t_game *game)
 	int j;
 	int	size;
 	int s2;
+	
 	size = find_longer_line(game->tab3);
 	s2 = find_longer_collum(game->tab3);
 	i = 0;
@@ -389,15 +394,10 @@ void is_collunm_bot(t_game *game)
 	while(j != size)
 	{
 		i = 1;
-	//	printf("%c\n",game->tab3[i][j]);
 		while (game->tab3[s2 - i][j] != '1')
 		{
-			// printf("%c\n",game->tab3[s2 - i][j]);
-			// printf("i : %d  j : %d\n", s2 - i , j);
 			if (game->tab3[s2 - i][j] != ' ')
-			{
 				throw_error4(game);
-			}
 			i++;
 		}
 		j++;
@@ -467,22 +467,21 @@ int check_zero(t_game *game, int i, int j)
 	return (1);
 }
 
-void	if_zero(t_game *game)
+void	if_zero(t_game *game, char **tab3)
 {
 	int i; 
 	int j;
 
 	i = 0;
 	j = 0;
-
-	while (game->tab3[j])
+	while (tab3[j])
 	{
 		i = 0;
-		while (game->tab3[j][i])
+		while (tab3[j][i])
 		{
 			// printf("%c\n",game->tab3[j][i]);
 			// printf("i : %d  j : %d\n", i , j);
-			if (game->tab3[j][i] == '0')
+			if (tab3[j][i] == '0')
 			{
 				if (!check_zero(game, i, j))
 				{
@@ -499,15 +498,17 @@ void	is_player(t_game *game)
 {
 	int i; 
 	int j;
+	char **tab3;
 
 	i = 0;
 	j = 0;
-	while (game->tab3[j])
+	tab3 = game->tab3;
+	while (tab3[j])
 	{
 		i = 0;
-		while (game->tab3[j][i])
+		while (tab3[j][i])
 		{
-			if (game->tab3[j][i] == 'N' || game->tab3[j][i] == 'S' || game->tab3[j][i] == 'E' || game->tab3[j][i] == 'W')
+			if (tab3[j][i] == 'N' || tab3[j][i] == 'S' || tab3[j][i] == 'E' || tab3[j][i] == 'W')
 			{
 				if (game->is_player != 'H')
 					throw_error66(game);
@@ -515,7 +516,7 @@ void	is_player(t_game *game)
 				{
 					throw_error4(game);
 				}
-				game->is_player = game->tab3[j][i];
+				game->is_player = tab3[j][i];
 			}
 			i++;
 		}
@@ -590,7 +591,7 @@ void main_parsing(t_game *game)
 	parse_settings(game);
 //	printf("texture nord |%s| \ntexture sud |%s| \ntexture west |%s| \ntexture east |%s| \ncouleur sol |%s| \ncouleur ciel |%s| \n" , game->NO_texture, game->SO_texture, game->WE_texture ,game->EA_texture, game->floor_rgb,game->ceiling_rgb);
 	final_map(game);
-	if_zero(game);
+	if_zero(game, game->tab3);
 	is_collunm_top(game);
 	is_collunm_bot(game);
 	is_line_left(game);
