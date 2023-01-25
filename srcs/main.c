@@ -29,10 +29,31 @@ void	init_player_position(t_game *g, char **tab)
 				g->p->y = (g->y * g->ts) + (g->ts / 2);
 				g->p->a = where_is_player_facing(tab[g->y][g->x]);
 				g->rad = (g->p->a * (PI / 180));
-				g->tab3[g->y][g->x] = '0';
+				g->map[g->y][g->x] = '0';
 			}
 		}
 	}
+	g->x_max = ft_strlen(tab[0]) * g->ts;
+	g->y_max = ft_tablen(tab) * g->ts;
+}
+
+void	meke_tab(t_game *g)
+{
+	g->map = malloc(sizeof(char *) * 12);
+	g->map[0] = ft_strdup("111111111111111");
+	g->map[1] = ft_strdup("100000000110001");
+	g->map[2] = ft_strdup("111100000000001");
+	g->map[3] = ft_strdup("100000000011001");
+	g->map[4] = ft_strdup("101111110000001");
+	g->map[5] = ft_strdup("100110000000001");
+	g->map[6] = ft_strdup("1000000N0000111");
+	g->map[7] = ft_strdup("100000000011101");
+	g->map[8] = ft_strdup("111100000000001");
+	g->map[9] = ft_strdup("100000000000101");
+	g->map[10] = ft_strdup("111111111111111");
+	g->map[11] = NULL;
+	g->x_mmax = ft_strlen(g->map[0]);
+	g->y_mmax = ft_tablen(g->map);
 }
 
 void	init_game(t_game *g, char *file)
@@ -48,8 +69,8 @@ void	init_game(t_game *g, char *file)
 	g->tab = NULL;
 	g->tab2 = NULL;
 	g->tab3 = NULL;
-	g-> truc_parse = 0;
-	g->texture =0;
+	g->truc_parse = 0;
+	g->texture = 0;
 	g->y = 0;
 	g->is_player = 'H';
 	g->is_valid = 1;
@@ -67,14 +88,13 @@ void	init_game(t_game *g, char *file)
 	g->p->x = 0;
 	g->p->y = 0;
 	g->p->a = 0;
-	
+	g->p->i = 0;
+	g->ray = malloc(sizeof(t_ray *) * g->wwidth + 1);
+	meke_tab(g);
 }
 
 void	finish(t_game *g)
 {
-	int	i;
-
-	i = 0;
 	free_magic(g);
 	free(g->NO_texture);
 	free(g->SO_texture);
@@ -82,7 +102,6 @@ void	finish(t_game *g)
 	free(g->EA_texture);
 	free(g->floor_rgb);
 	free(g->ceiling_rgb);
-	i = 0;
 	mlx_destroy_window(g->mlx, g->win);
 	mlx_destroy_display(g->mlx);
 	free(g->p);
@@ -147,6 +166,18 @@ void print_map2(t_game *game)
 	}
 }
 
+void print_tab(char **tab)
+{
+	int	i;
+
+	i = 0;
+	while (tab[i])
+	{
+		ft_printf("%s\n", tab[i]);
+		i++;
+	}
+}
+
 int	main(int ac, char **av)
 {
 t_game	*game;
@@ -154,10 +185,11 @@ t_game	*game;
 	(void) ac;
 	(void) av;
 	game = malloc((sizeof (t_game)));
-	init_game(game, av[1]);
+	init_game(game, "map2.cub");
 	main_parsing(game);
 	//print_map2(game);
-	init_player_position(game, game->tab3);
+	init_player_position(game, game->map);
+	//print_tab(game->map);
 	if (ac != 2)
 		parse_error();
 	game->mlx = mlx_init();
@@ -171,4 +203,4 @@ t_game	*game;
 	mlx_loop(game->mlx);
 	finish(game);
 	return (0);
-} 
+}

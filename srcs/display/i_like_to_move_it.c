@@ -3,38 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   i_like_to_move_it.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rpol <marvin@42.fr>                        +#+  +:+       +#+        */
+/*   By: rpol <rpol@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/12 17:31:45 by hspriet           #+#    #+#             */
-/*   Updated: 2023/01/23 16:55:35 by rpol             ###   ########.fr       */
+/*   Updated: 2023/01/25 01:33:55 by rpol             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub.h"
-
-int	ft_tablen(char **tab)
-{
-	int	i;
-
-	i = 0;
-	while (tab[i])
-		i++;
-	return (i);
-}
-
-int	is_new_pos_lava(t_game *g, float x, float y)
-{
-	int	tab_x;
-	int	tab_y;
-
-	if (x < 0 || y < 0)
-		return (1);
-	tab_x = floor(x / g->ts);
-	tab_y = floor(y / g->ts);
-	if (g->tab3[tab_y][tab_x] != '1')
-		return (0);
-	return (1);
-}
 
 int	is_new_pos_lava_move(t_game *g, float x, float y)
 {
@@ -45,11 +21,11 @@ int	is_new_pos_lava_move(t_game *g, float x, float y)
 		return (1);
 	tab_x = floor(x / g->ts);
 	tab_y = floor(y / g->ts);
-	if (tab_x > ft_strlen(g->tab3[0]))
+	if (tab_x > ft_strlen(g->map[0]))
 		return (1);
-	if (tab_y >= (ft_tablen(g->tab3)))
+	if (tab_y >= (ft_tablen(g->map)))
 		return (1);
-	if (g->tab3[tab_y][tab_x] == '1' || g->tab3[tab_y][tab_x] == '0')
+	if (g->map[tab_y][tab_x] == '1' || g->map[tab_y][tab_x] == '0')
 		return (0);
 	return (1);
 }
