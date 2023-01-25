@@ -15,25 +15,17 @@ typedef struct s_player{
 }	t_player;
 
 typedef struct s_ray{
-	float	rad;
-	int		is_ray_up;
-	int		is_ray_down;
-	int		is_ray_left;
-	int		is_ray_right;
-	float	x_hor_hit;
-	float	y_hor_hit;
-	int		hit_horizontal;
-	float	x_ver_hit;
-	float	y_ver_hit;
-	int		hit_vertical;
-	int	x_intercept;
-	int	y_intercept;
-	float	y_step;
-	float	x_step;
-	float	distance;
-	int		texture;
-	int old_x;
-	int	old_y;
+	int				id;
+	float			radr;
+	float			distance;
+	int				texture;
+	int				x_intercept;
+	int				y_intercept;
+	int				x_wall_pos;
+	int				y_wall_pos;
+	int				old_x;
+	int				old_y;
+	struct s_ray	*next;
 }	t_ray;
 
 typedef struct s_game {
@@ -92,8 +84,11 @@ typedef struct s_game {
 	float		radr;
 	int		x_intercept;
 	int		y_intercept;
+	int		x_wall_pos;
+	int		y_wall_pos;
 	int 	old_x;
 	int		old_y;
+	t_ray	*c_ray;
 	char		**map;
 }	t_game;
 

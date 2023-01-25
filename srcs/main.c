@@ -56,9 +56,30 @@ void	meke_tab(t_game *g)
 	g->y_mmax = ft_tablen(g->map);
 }
 
+void	init_rays(t_game *g)
+{
+	int		id;
+	t_ray	*ray;
+
+	id = 0;
+	ray = malloc(sizeof(t_ray) * 1);
+	g->ray = ray;
+	ray->id = id;
+	while (id < g->wwidth)
+	{
+		ray->next = malloc(sizeof(t_ray) * 1);
+		ray = ray->next;
+		ray->id = id;
+		id++;
+	}
+	ray->next = NULL;
+}
+
 void	init_game(t_game *g, char *file)
 {
-	
+	g->wwidth = 1200;
+	g->wheight = 800;
+	init_rays(g);
 	g->x = 0;
 	g->NO_texture = NULL;
 	g->SO_texture = NULL;
@@ -82,14 +103,12 @@ void	init_game(t_game *g, char *file)
 	g->step = 0;
 	g->turn = 0;
 	g->fov = 60 * (PI / 180);
-	g->wwidth = 1200;
-	g->wheight = 800;
 	g->p = malloc(sizeof(t_player));
 	g->p->x = 0;
 	g->p->y = 0;
 	g->p->a = 0;
 	g->p->i = 0;
-	g->ray = malloc(sizeof(t_ray *) * g->wwidth + 1);
+	
 	meke_tab(g);
 }
 
