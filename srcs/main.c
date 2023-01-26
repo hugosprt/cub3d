@@ -108,12 +108,13 @@ void	init_game(t_game *g, char *file)
 	g->p->y = 0;
 	g->p->a = 0;
 	g->p->i = 0;
-	
 	meke_tab(g);
 }
 
 void	finish(t_game *g)
 {
+	mlx_destroy_image(g->mlx, g->t_n->mlx_xmp);
+	mlx_destroy_image(g->mlx, g->t_s->mlx_xmp);
 	free_magic(g);
 	free(g->NO_texture);
 	free(g->SO_texture);
@@ -121,6 +122,8 @@ void	finish(t_game *g)
 	free(g->EA_texture);
 	free(g->floor_rgb);
 	free(g->ceiling_rgb);
+	//mlx_destroy_image(g->mlx, g->t_e->mlx_xmp);
+	//mlx_destroy_image(g->mlx, g->t_w->mlx_xmp);
 	mlx_destroy_window(g->mlx, g->win);
 	mlx_destroy_display(g->mlx);
 	free(g->p);
@@ -197,6 +200,40 @@ void print_tab(char **tab)
 	}
 }
 
+void	texture_init(t_game *g, t_texture *texture, char *path_texture)
+{
+	int	t;
+	int	t1;
+
+	t = 64;
+	ft_printf("path to texture %s\n", path_texture);
+	texture->mlx_xmp = mlx_xpm_file_to_image(g->mlx, path_texture, &t, &t1);
+	if (t != 64 || t1 != 64)
+	{
+		ft_printf("Stop this right now and give me good texture\n");
+		exit (69);
+	}
+	if (!texture->mlx_xmp)
+	{
+		ft_printf("Stop this right now and give me good texture\n");
+		exit (69);
+	}
+	texture->adr = mlx_get_data_addr(texture->mlx_xmp, &texture->bitsz,
+			&texture->lsz, &texture->endi);
+}
+
+void	init_textures(t_game *g)
+{
+	g->t_n = malloc(sizeof(t_texture *) * 1);
+	g->t_s = malloc(sizeof(t_texture *) * 1);
+	g->t_e = malloc(sizeof(t_texture *) * 1);
+	g->t_w = malloc(sizeof(t_texture *) * 1);
+	texture_init(g, g->t_n, g->NO_texture);
+	texture_init(g, g->t_s, g->SO_texture);
+	//texture_init(g, g->t_e, g->NO_texture);
+	//texture_init(g, g->t_w, g->NO_texture);
+}
+
 int	main(int ac, char **av)
 {
 t_game	*game;
@@ -215,6 +252,7 @@ t_game	*game;
 	if (game->mlx == NULL)
 		parse_error();
 	game->win = mlx_new_window(game->mlx, game->wwidth, game->wheight, "CUB3D");
+	init_textures(game);
 	mlx_hook(game->win, 02, 1l << 0, key_pressed, game);
 	mlx_hook(game->win, 3, 1L << 1, key_released, game);
 	mlx_loop_hook(game->mlx, render, game);

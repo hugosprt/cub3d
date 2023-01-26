@@ -1,7 +1,9 @@
-NO ./path_to_the_north_texture
-SO ./path_to_the_south_texture
-WE ./path_to_the_west_texture
-EA ./path_to_the_east_texture
+NO ./textures/mossy.xpm
+SO ./textures/eagle.xpm
+EA ./textures/wood.xpm
+WE ./textures/greystone.xpm
+
+
 F     220,10,200
 C 225,0,10
 
