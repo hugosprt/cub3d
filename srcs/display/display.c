@@ -225,16 +225,13 @@ unsigned int	color_depth(t_game *g, int r, int gr, int b)
 
 	color = 0;
 	if (g->c_ray->texture == 'n')
-		return (*(unsigned int *)(g->adr_txt + 5 * g->t_n->lsz + 5 * g->t_n->bitsz));
+		return (*(unsigned int *)(g->adr_txt + g->off_y * g->t_n->lsz + (g->off_x * (g->t_n->bitsz))));
 	if (g->c_ray->texture == 's')
-		gr = 200;
+		return (*(unsigned int *)(g->adr_txt + g->off_y * g->t_s->lsz + (g->off_x * (g->t_s->bitsz))));
 	if (g->c_ray->texture == 'e')
-		b = 200;
+		return (*(unsigned int *)(g->adr_txt + g->off_y * g->t_e->lsz + (g->off_x * (g->t_e->bitsz))));
 	if (g->c_ray->texture == 'w')
-	{
-		b = 200;
-		r = 200;
-	}
+		return (*(unsigned int *)(g->adr_txt + g->off_y * g->t_w->lsz + (g->off_x * (g->t_w->bitsz))));
 	if (g->c_ray->texture == 0)
 	{
 		r = 0;
@@ -253,12 +250,25 @@ unsigned int	color_depth(t_game *g, int r, int gr, int b)
 	return ((unsigned int)color);
 }
 
+void calculate_offset(t_game *g, int y, int wallheight)
+{
+	int	distance;
+
+	if (g->c_ray->texture == 'n' || g->c_ray->texture == 's')
+		g->off_x = g->c_ray->y_intercept - (g->c_ray->y_wall_pos * g->ts);
+	if (g->c_ray->texture == 'e' || g->c_ray->texture == 'w')
+		g->off_x = g->c_ray->x_intercept - (g->c_ray->y_wall_pos * g->ts);
+	distance = y + (wallheight / 2) - (g->wheight / 2);
+	g->off_y = distance * ((float)g->ts / wallheight);
+	//printf("off_x %d off_y %d\n", g->off_x, g->off_y);
+}
+
 void	draw_ray(t_game *g, int i)
 {
 	int		y;
 	int		y_start;
 	int		y_finish;
-	int		wall_height;
+	float	wall_height;
 	float	projection_plane;
 
 	g->c_ray->distance = cos(g->c_ray->radr - g->rad) * g->c_ray->distance;
@@ -272,7 +282,10 @@ void	draw_ray(t_game *g, int i)
 		if (y < y_start)
 			img_put_pixel(i, y, g, g->sky_color);
 		if (y >= y_start && y <= y_finish)
+		{
+			calculate_offset(g, y, wall_height);
 			img_put_pixel(i, y, g, color_depth(g, 255, 255, 255));
+		}
 		if (y > y_finish)
 			img_put_pixel(i, y, g, g->ground_color);
 		y++;

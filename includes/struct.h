@@ -99,6 +99,8 @@ typedef struct s_game {
 	int			y_max;
 	int			x_mmax;
 	int			y_mmax;
+	int			off_x;
+	int			off_y;
 	char		*adr_txt;
 }	t_game;
 
