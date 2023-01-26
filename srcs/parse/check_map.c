@@ -26,9 +26,7 @@ void	if_zero(t_game *game, char **tab3)
 			if (tab3[j][i] == '0')
 			{
 				if (!check_zero(game, i, j))
-				{
 					throw_error4(game);
-				}
 			}
 			i++;
 		}
