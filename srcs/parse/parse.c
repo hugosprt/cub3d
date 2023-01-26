@@ -265,33 +265,33 @@ void parse_settings(t_game *game)
 		if (!ft_strcmp(compas, "NO"))
 		{
 			str = ft_substr(str, 2, ft_strlen(str) - 2);
-			if (game->NO_texture)
+			if (game->no_texture)
 				throw_error3(game, *tab);
-			game->NO_texture = ft_strtrim(str, " ");
+			game->no_texture = ft_strtrim(str, " ");
 			game->truc_parse++;
 		}
 		else if (!ft_strcmp(compas, "SO"))
 		{
 			str = ft_substr(str, 2, ft_strlen(str) - 2);
-			if (game->SO_texture)
+			if (game->so_texture)
 				throw_error3(game, *tab);
-			game->SO_texture = ft_strtrim(str, " ");
+			game->so_texture = ft_strtrim(str, " ");
 			game->truc_parse++;
 		}
 		else if (!ft_strcmp(compas, "WE"))
 		{
 			str = ft_substr(str, 2, ft_strlen(str) - 2);
-			if (game->WE_texture)
+			if (game->we_texture)
 				throw_error3(game, *tab);
-			game->WE_texture = ft_strtrim(str, " ");
+			game->we_texture = ft_strtrim(str, " ");
 			game->truc_parse++;
 		}
 		else if (!ft_strcmp(compas, "EA"))
 		{
 			str = ft_substr(str, 2, ft_strlen(str) - 2);
-			if (game->EA_texture)
+			if (game->ea_texture)
 				throw_error3(game, *tab);
-			game->EA_texture = ft_strtrim(str, " ");
+			game->ea_texture = ft_strtrim(str, " ");
 			game->truc_parse++;
 		}
 		else if (!ft_strcmp(compas2, "F"))

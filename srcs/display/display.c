@@ -219,13 +219,13 @@ void	print_map(t_game *g, char **tab)
 	player_render(g, 0x00FF0000);
 }
 
-int	color_depth(t_game *g, int r, int gr, int b)
+unsigned int	color_depth(t_game *g, int r, int gr, int b)
 {
 	int	color;
 
 	color = 0;
 	if (g->c_ray->texture == 'n')
-		r = 200;
+		return (*(unsigned int *)(g->adr_txt + 5 * g->t_n->lsz + 5 * g->t_n->bitsz));
 	if (g->c_ray->texture == 's')
 		gr = 200;
 	if (g->c_ray->texture == 'e')
@@ -250,7 +250,7 @@ int	color_depth(t_game *g, int r, int gr, int b)
 	color |= r << 16;
 	color |= gr << 8;
 	color |= b;
-	return (color);
+	return ((unsigned int)color);
 }
 
 void	draw_ray(t_game *g, int i)
@@ -547,6 +547,22 @@ void print_rays(t_game *g)
 	}
 }
 
+void	info_texture(t_game *g, int texture)
+{
+	if (texture == 'n')
+		g->adr_txt = mlx_get_data_addr(g->t_n->mlx_xmp, &g->t_n->bitsz,
+	 		&g->t_n->lsz, &g->t_n->endi);
+	if (texture == 's')
+		g->adr_txt = mlx_get_data_addr(g->t_s->mlx_xmp, &g->t_s->bitsz,
+	 		&g->t_s->lsz, &g->t_s->endi);
+	if (texture == 'e')
+		g->adr_txt = mlx_get_data_addr(g->t_e->mlx_xmp, &g->t_e->bitsz,
+	 		&g->t_e->lsz, &g->t_e->endi);
+	if (texture == 'w')
+		g->adr_txt = mlx_get_data_addr(g->t_w->mlx_xmp, &g->t_w->bitsz,
+	 		&g->t_w->lsz, &g->t_w->endi);
+}
+
 void	ray_draw(t_game *g)
 {
 	int	last_texture;
@@ -559,6 +575,7 @@ void	ray_draw(t_game *g)
 			last_texture = g->c_ray->texture;
 		else
 			g->c_ray->texture = last_texture;
+		info_texture(g, g->c_ray->texture);
 		draw_ray(g, g->c_ray->id);
 		g->c_ray = g->c_ray->next;
 	}

@@ -46,17 +46,13 @@ typedef struct s_game {
 	char		**tab;
 	char		**tab2;
 	char		**tab3;
-    char    	*NO_texture;
-    char    	*SO_texture;
-    char    	*WE_texture;
-    char    	*EA_texture;
-    char    	*floor_rgb;
-    char    	*ceiling_rgb;
-    int     	truc_parse;
-    int     	NO;
-    int     	SO;
-    int     	EA;
-    int     	WE;
+	char		*no_texture;
+	char		*so_texture;
+	char		*we_texture;
+	char		*ea_texture;
+	char		*floor_rgb;
+	char		*ceiling_rgb;
+	int			truc_parse;
 	t_texture	*t_n;
 	t_texture	*t_s;
 	t_texture	*t_e;
@@ -103,6 +99,7 @@ typedef struct s_game {
 	int			y_max;
 	int			x_mmax;
 	int			y_mmax;
+	char		*adr_txt;
 }	t_game;
 
 #endif

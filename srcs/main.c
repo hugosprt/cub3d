@@ -81,10 +81,10 @@ void	init_game(t_game *g, char *file)
 	g->wheight = 800;
 	init_rays(g);
 	g->x = 0;
-	g->NO_texture = NULL;
-	g->SO_texture = NULL;
-	g->EA_texture = NULL;
-	g->WE_texture = NULL;
+	g->no_texture = NULL;
+	g->so_texture = NULL;
+	g->ea_texture = NULL;
+	g->we_texture = NULL;
 	g->floor_rgb = NULL;
 	g->ceiling_rgb = NULL;
 	g->tab = NULL;
@@ -102,7 +102,7 @@ void	init_game(t_game *g, char *file)
 	g->side = 0;
 	g->step = 0;
 	g->turn = 0;
-	g->fov = 60 * (PI / 180);
+	g->fov = 64 * (PI / 180);
 	g->p = malloc(sizeof(t_player));
 	g->p->x = 0;
 	g->p->y = 0;
@@ -115,15 +115,15 @@ void	finish(t_game *g)
 {
 	mlx_destroy_image(g->mlx, g->t_n->mlx_xmp);
 	mlx_destroy_image(g->mlx, g->t_s->mlx_xmp);
+	mlx_destroy_image(g->mlx, g->t_e->mlx_xmp);
+	mlx_destroy_image(g->mlx, g->t_w->mlx_xmp);
 	free_magic(g);
-	free(g->NO_texture);
-	free(g->SO_texture);
-	free(g->WE_texture);
-	free(g->EA_texture);
+	free(g->no_texture);
+	free(g->so_texture);
+	free(g->we_texture);
+	free(g->ea_texture);
 	free(g->floor_rgb);
 	free(g->ceiling_rgb);
-	//mlx_destroy_image(g->mlx, g->t_e->mlx_xmp);
-	//mlx_destroy_image(g->mlx, g->t_w->mlx_xmp);
 	mlx_destroy_window(g->mlx, g->win);
 	mlx_destroy_display(g->mlx);
 	free(g->p);
@@ -218,8 +218,8 @@ void	texture_init(t_game *g, t_texture *texture, char *path_texture)
 		ft_printf("Stop this right now and give me good texture\n");
 		exit (69);
 	}
-	texture->adr = mlx_get_data_addr(texture->mlx_xmp, &texture->bitsz,
-			&texture->lsz, &texture->endi);
+	// texture->adr = mlx_get_data_addr(texture->mlx_xmp, &texture->bitsz,
+	// 		&texture->lsz, &texture->endi);
 }
 
 void	init_textures(t_game *g)
@@ -228,10 +228,10 @@ void	init_textures(t_game *g)
 	g->t_s = malloc(sizeof(t_texture *) * 1);
 	g->t_e = malloc(sizeof(t_texture *) * 1);
 	g->t_w = malloc(sizeof(t_texture *) * 1);
-	texture_init(g, g->t_n, g->NO_texture);
-	texture_init(g, g->t_s, g->SO_texture);
-	//texture_init(g, g->t_e, g->NO_texture);
-	//texture_init(g, g->t_w, g->NO_texture);
+	texture_init(g, g->t_n, g->no_texture);
+	texture_init(g, g->t_s, g->so_texture);
+	texture_init(g, g->t_e, g->ea_texture);
+	texture_init(g, g->t_w, g->we_texture);
 }
 
 int	main(int ac, char **av)
