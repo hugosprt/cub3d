@@ -7,6 +7,13 @@ SRCS         = srcs/main.c \
 				srcs/gnl/get_next_line_utils.c\
 				srcs/errors/error.c \
 				srcs/parse/parse.c \
+				srcs/parse/check_map.c \
+				srcs/parse/check_map2.c \
+				srcs/parse/check_map3.c \
+				srcs/parse/error.c \
+				srcs/parse/free_func.c \
+				srcs/parse/utils.c \
+				srcs/parse/rgb.c \
 				srcs/display/display.c \
 				srcs/display/i_like_to_move_it.c \
 
