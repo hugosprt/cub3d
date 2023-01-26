@@ -225,13 +225,13 @@ unsigned int	color_depth(t_game *g, int r, int gr, int b)
 
 	color = 0;
 	if (g->c_ray->texture == 'n')
-		return (*(unsigned int *)(g->adr_txt + g->off_y * g->t_n->lsz + (g->off_x * (g->t_n->bitsz))));
+		return (*(unsigned int *)(g->adr_txt + g->off_y * g->t_n->lsz + (g->off_x * (g->t_n->bitsz / 8))));
 	if (g->c_ray->texture == 's')
-		return (*(unsigned int *)(g->adr_txt + g->off_y * g->t_s->lsz + (g->off_x * (g->t_s->bitsz))));
+		return (*(unsigned int *)(g->adr_txt + g->off_y * g->t_s->lsz + (g->off_x * (g->t_s->bitsz / 8))));
 	if (g->c_ray->texture == 'e')
-		return (*(unsigned int *)(g->adr_txt + g->off_y * g->t_e->lsz + (g->off_x * (g->t_e->bitsz))));
+		return (*(unsigned int *)(g->adr_txt + g->off_y * g->t_e->lsz + (g->off_x * (g->t_e->bitsz / 8))));
 	if (g->c_ray->texture == 'w')
-		return (*(unsigned int *)(g->adr_txt + g->off_y * g->t_w->lsz + (g->off_x * (g->t_w->bitsz))));
+		return (*(unsigned int *)(g->adr_txt + g->off_y * g->t_w->lsz + (g->off_x * (g->t_w->bitsz / 8))));
 	if (g->c_ray->texture == 0)
 	{
 		r = 0;
