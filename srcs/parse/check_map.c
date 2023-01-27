@@ -56,19 +56,11 @@ void	is_player(t_game *game)
 					throw_error4(game);
 				game->is_player = tab3[j][i];
 			}
-			else if (tab3[j][i] != 'N' && tab3[j][i] != 'S'
-				&& tab3[j][i] != 'E' && tab3[j][i] != 'W' && tab3[j][i] != ' '
-					&& !ft_isdigit(tab3[j][i]))
+			else if (tab3[j][i] != ' ' && !ft_isdigit(tab3[j][i]))
 				throw_error4(game);
 			i++;
 		}
 		j++;
-	}
-	if (game->is_player != 'N' && game->is_player != 'S'
-				&& game->is_player != 'E' && game->is_player != 'W')
-	{ 
-		printf("here\n");
-		throw_error4(game);
 	}
 }
 

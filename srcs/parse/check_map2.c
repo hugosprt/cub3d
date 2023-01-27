@@ -73,13 +73,13 @@ void	is_line_right(t_game *game)
 	int	i;
 	int	j;
 	int	size;
-	int size2;
+	int	size2;
 
 	size = find_longer_line(game->tab3);
 	size2 = find_longer_collum(game->tab3) - 1;
 	i = 0;
 	j = 0;
-	while (game->tab3[j][i] && game->tab3[j]  && j < size2)
+	while (game->tab3[j][i] && game->tab3[j] && j < size2)
 	{
 		i = 1;
 		while (game->tab3[j][i] && game->tab3[j][size - i] != '1')
