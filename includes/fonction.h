@@ -59,6 +59,5 @@ void		print_tiles(t_game *a, char **tab);
 int			render(t_game *g);
 /* I_LIKE_TO_MOVE_IT.C */
 void		update_player(t_game *g);
-int			is_new_pos_lava(t_game *g, float x, float y);
 
 #endif

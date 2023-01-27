@@ -43,10 +43,10 @@ void	free_tab(char **tab)
 void	fail_finish(t_game *g)
 {
 	free_magic(g);
-	free(g->NO_texture);
-	free(g->SO_texture);
-	free(g->WE_texture);
-	free(g->EA_texture);
+	free(g->no_texture);
+	free(g->so_texture);
+	free(g->we_texture);
+	free(g->ea_texture);
 	free(g->floor_rgb);
 	free(g->ceiling_rgb);
 	free(g->p);
