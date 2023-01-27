@@ -71,6 +71,7 @@ typedef struct s_game {
 	t_player	*p;
 	float		fov;
 	int			step_speed;
+	int			side_speed;
 	float		rotation_speed;
 	int			step;
 	int			side;

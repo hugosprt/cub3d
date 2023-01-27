@@ -52,34 +52,15 @@ void	meke_tab(t_game *g)
 	g->map[10] = ft_strdup("111111111111111");
 	g->map[11] = NULL;
 	g->x_mmax = ft_strlen(g->map[0]);
-	g->y_mmax = ft_tablen(g->map);
-}
-
-void	init_rays(t_game *g)
-{
-	int		id;
-	t_ray	*ray;
-
-	id = 0;
-	ray = malloc(sizeof(t_ray) * 1);
-	g->ray = ray;
-	ray->id = id;
-	while (id < g->wwidth)
-	{
-		ray->next = malloc(sizeof(t_ray) * 1);
-		ray = ray->next;
-		ray->id = id;
-		id++;
-	}
-	ray->next = NULL;
+	g->y_mmax = ft_tablen(g->map) - 1;
 }
 
 void	init_game(t_game *g, char *file)
 {
 	g->wwidth = 1200;
 	g->wheight = 800;
-	init_rays(g);
 	g->x = 0;
+	g->y = 0;
 	g->no_texture = NULL;
 	g->so_texture = NULL;
 	g->ea_texture = NULL;
@@ -91,17 +72,17 @@ void	init_game(t_game *g, char *file)
 	g->tab3 = NULL;
 	g->truc_parse = 0;
 	g->texture = 0;
-	g->y = 0;
 	g->is_player = 'H';
 	g->is_valid = 1;
 	g->fd = open(file, O_RDONLY);
 	g->ts = 64;
 	g->rotation_speed = PI / 90;
 	g->step_speed = 4;
+	g->side_speed = 2;
 	g->side = 0;
 	g->step = 0;
 	g->turn = 0;
-	g->fov = 64 * (PI / 180);
+	g->fov = 60 * (PI / 180);
 	g->p = malloc(sizeof(t_player));
 	g->p->x = 0;
 	g->p->y = 0;
@@ -111,10 +92,10 @@ void	init_game(t_game *g, char *file)
 
 void	finish(t_game *g)
 {
-	mlx_destroy_image(g->mlx, g->t_n->mlx_xmp);
-	mlx_destroy_image(g->mlx, g->t_s->mlx_xmp);
-	mlx_destroy_image(g->mlx, g->t_e->mlx_xmp);
-	mlx_destroy_image(g->mlx, g->t_w->mlx_xmp);
+	mlx_destroy_image(g->mlx, g->t_n);
+	mlx_destroy_image(g->mlx, g->t_s);
+	mlx_destroy_image(g->mlx, g->t_e);
+	mlx_destroy_image(g->mlx, g->t_w);
 	free_magic(g);
 	free(g->no_texture);
 	free(g->so_texture);
@@ -198,38 +179,33 @@ void print_tab(char **tab)
 	}
 }
 
-void	texture_init(t_game *g, t_texture *texture, char *path_texture)
+void	*texture_init(t_game *g, char *path_texture)
 {
-	int	t;
-	int	t1;
+	int		t;
+	int		t1;
+	void	*txt;
 
 	t = 64;
-	ft_printf("path to texture %s\n", path_texture);
-	texture->mlx_xmp = mlx_xpm_file_to_image(g->mlx, path_texture, &t, &t1);
+	txt = mlx_xpm_file_to_image(g->mlx, path_texture, &t, &t1);
 	if (t != 64 || t1 != 64)
 	{
 		ft_printf("Stop this right now and give me good texture\n");
 		exit (69);
 	}
-	if (!texture->mlx_xmp)
+	if (!txt)
 	{
 		ft_printf("Stop this right now and give me good texture\n");
 		exit (69);
 	}
-	// texture->adr = mlx_get_data_addr(texture->mlx_xmp, &texture->bitsz,
-	// 		&texture->lsz, &texture->endi);
+	return (txt);
 }
 
 void	init_textures(t_game *g)
 {
-	g->t_n = malloc(sizeof(t_texture *) * 1);
-	g->t_s = malloc(sizeof(t_texture *) * 1);
-	g->t_e = malloc(sizeof(t_texture *) * 1);
-	g->t_w = malloc(sizeof(t_texture *) * 1);
-	texture_init(g, g->t_n, g->no_texture);
-	texture_init(g, g->t_s, g->so_texture);
-	texture_init(g, g->t_e, g->ea_texture);
-	texture_init(g, g->t_w, g->we_texture);
+	g->t_n = texture_init(g, g->no_texture);
+	g->t_s = texture_init(g, g->so_texture);
+	g->t_e = texture_init(g, g->ea_texture);
+	g->t_w = texture_init(g, g->we_texture);
 }
 
 int	main(int ac, char **av)

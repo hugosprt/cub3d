@@ -6,7 +6,7 @@
 /*   By: rpol <rpol@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/12 17:31:45 by hspriet           #+#    #+#             */
-/*   Updated: 2023/01/27 01:45:51 by rpol             ###   ########.fr       */
+/*   Updated: 2023/01/27 03:39:50 by rpol             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,34 +30,6 @@ int	is_new_pos_lava_move(t_game *g, float x, float y)
 	return (1);
 }
 
-// void	move_right(t_game *g, double n)
-// {
-// 	int	new_x;
-// 	int	new_y;
-
-// 	new_x = g->p->x - (int)(n * (sin(g->rad) * g->step_speed));
-// 	new_y = g->p->y + (int)(n * (cos(g->rad) * g->step_speed));
-// 	if (!is_new_pos_lava(g, new_x, new_y))
-// 	{
-// 		g->p->x = new_x;
-// 		g->p->y = new_y;
-// 	}
-// }
-
-// void	move_up(t_game *g, double n)
-// {
-// 	int	new_x;
-// 	int	new_y;
-
-// 	new_x = g->p->x + (int)(n * (cos(g->rad) * g->step_speed));
-// 	new_y = g->p->y + (int)(n * (sin(g->rad) * g->step_speed));
-// 	if (!is_new_pos_lava(g, new_x, new_y))
-// 	{
-// 		g->p->x = new_x;
-// 		g->p->y = new_y;
-// 	}
-// }
-
 float	normalise_rad(float rad)
 {
 	rad = remainder(rad, 2 * PI);
@@ -71,9 +43,10 @@ void	update_player(t_game *g)
 	float		new_x;
 	float		new_y;
 
+	g->rad = normalise_rad(g->rad);
 	g->rad += (float)g->turn * g->rotation_speed;
-	new_x = g->p->x - (sin(g->rad) * g->side * g->step_speed);
-	new_y = g->p->y + (cos(g->rad) * g->side * g->step_speed);
+	new_x = g->p->x - (sin(g->rad) * g->side * g->side_speed);
+	new_y = g->p->y + (cos(g->rad) * g->side * g->side_speed);
 	if (g->side == 0)
 	{
 		new_x = (double)g->p->x + (cos(g->rad) * g->step * g->step_speed);

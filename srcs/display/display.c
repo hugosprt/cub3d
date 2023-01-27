@@ -1,15 +1,15 @@
 #include "../../includes/cub.h"
 
-static int	img_put_pixel(int x, int y, t_game *v, unsigned int color)
+static int	img_put_pixel(int x, int y, t_game *g, unsigned int color)
 {
 	char	*adrtmp;
 	int		lsz;
 	int		bitsz;
 
-	adrtmp = v->adr;
-	lsz = v->lsz;
-	bitsz = v->bitsz;
-	if (x > 0 && y > 0 && x < v->wwidth && y < v->wheight)
+	adrtmp = g->adr;
+	lsz = g->lsz;
+	bitsz = g->bitsz;
+	if (x > 0 && y > 0 && x < g->wwidth && y < g->wheight)
 	{
 		adrtmp += (y * lsz + (x * ((bitsz) / 8)));
 		*(unsigned int *)adrtmp = color;
@@ -39,22 +39,22 @@ void	rectangle_tilesize(t_game *g, unsigned int color)
 	}
 }
 
-void	ft_init_bsh(t_game *v, int fx, int fy)
+void	ft_init_bsh(t_game *g, int fx, int fy)
 {
-	v->dx = abs(fx - (int)v->p->x);
-	if (v->p->x < fx)
-		v->sx = 1;
+	g->dx = abs(fx - (int)g->p->x);
+	if (g->p->x < fx)
+		g->sx = 1;
 	else
-		v->sx = -1;
-	v->dy = abs(fy - (int)v->p->y);
-	if (v->p->y < fy)
-		v->sy = 1;
+		g->sx = -1;
+	g->dy = abs(fy - (int)g->p->y);
+	if (g->p->y < fy)
+		g->sy = 1;
 	else
-		v->sy = -1;
-	if (v->dx > v->dy)
-		v->er = v->dx / 2;
+		g->sy = -1;
+	if (g->dx > g->dy)
+		g->er = g->dx / 2;
 	else
-		v->er = -v->dy / 2;
+		g->er = -g->dy / 2;
 }
 
 int	is_new_pos_lavab(t_game *g, float x, float y)
@@ -66,6 +66,8 @@ int	is_new_pos_lavab(t_game *g, float x, float y)
 		return (1);
 	tab_x = floor(x / g->ts);
 	tab_y = floor(y / g->ts);
+	if (tab_x < 0 || tab_y < 0 || tab_x > g->x_mmax || tab_y > g->y_mmax)
+		return (1);
 	if (g->map[tab_y][tab_x] != '1')
 		return (0);
 	return (1);
@@ -85,29 +87,29 @@ int	is_new_pos_lava(t_game *g, int x, int y)
 	return (1);
 }
 
-void	ft_bsh_print(t_game *v, int fx, int fy, int vect)
+void	ft_bsh_print(t_game *g, int fx, int fy, int vect)
 {
 	int	x;
 	int	y;
 
-	ft_init_bsh(v, fx, fy);
-	x = v->p->x;
-	y = v->p->y;
+	ft_init_bsh(g, fx, fy);
+	x = g->p->x;
+	y = g->p->y;
 	while (1)
 	{
-		img_put_pixel(x, y, v, 0x00FF0000);
-		if ((x == fx && y == fy) || (is_new_pos_lavab(v, x, y) && vect))
+		img_put_pixel(x, y, g, 0x00FF0000);
+		if ((x == fx && y == fy) || (is_new_pos_lavab(g, x, y) && vect))
 			break ;
-		v->e2 = v->er;
-		if (v->e2 > -v->dx)
+		g->e2 = g->er;
+		if (g->e2 > -g->dx)
 		{
-			v->er -= v->dy;
-			x += v->sx;
+			g->er -= g->dy;
+			x += g->sx;
 		}
-		if (v->e2 < v->dy)
+		if (g->e2 < g->dy)
 		{
-			v->er += v->dx;
-			y += v->sy;
+			g->er += g->dx;
+			y += g->sy;
 		}
 	}
 }
@@ -118,42 +120,42 @@ void	old_pos(t_game *g,int x, int y)
 	g->old_y = floor(y / g->ts);
 }
 
-void	hit_pos(t_game *v, int x, int y)
+void	hit_pos(t_game *g, int x, int y)
 {
-	v->x_intercept = x;
-	v->y_intercept = y;
-	v->x_wall_pos = floor(x / v->ts);
-	v->y_wall_pos = floor(y / v->ts);
-	v->distance = sqrt(((x - v->p->x) * (x - v->p->x)) + ((y - v->p->y) * (y - v->p->y)));
+	g->x_intercept = x;
+	g->y_intercept = y;
+	g->x_wall_pos = floor(x / g->ts);
+	g->y_wall_pos = floor(y / g->ts);
+	g->distance = sqrt(((x - g->p->x) * (x - g->p->x)) + ((y - g->p->y) * (y - g->p->y)));
 }
 
-void	ft_bsh_distance(t_game *v, int fx, int fy)
+void	ft_bsh_distance(t_game *g, int fx, int fy)
 {
 	int	x;
 	int	y;
 
-	ft_init_bsh(v, fx, fy);
-	x = v->p->x;
-	y = v->p->y;
-	old_pos(v, x, y);
+	ft_init_bsh(g, fx, fy);
+	x = g->p->x;
+	y = g->p->y;
+	old_pos(g, x, y);
 	while (1)
 	{
-		if ((x == fx && y == fy) || is_new_pos_lavab(v, x, y))
+		if ((x == fx && y == fy) || is_new_pos_lavab(g, x, y))
 		{
-			hit_pos(v, x, y);
+			hit_pos(g, x, y);
 			break ;
 		}
-		old_pos(v, x, y);
-		v->e2 = v->er;
-		if (v->e2 > -v->dx)
+		old_pos(g, x, y);
+		g->e2 = g->er;
+		if (g->e2 > -g->dx)
 		{
-			v->er -= v->dy;
-			x += v->sx;
+			g->er -= g->dy;
+			x += g->sx;
 		}
-		if (v->e2 < v->dy)
+		if (g->e2 < g->dy)
 		{
-			v->er += v->dx;
-			y += v->sy;
+			g->er += g->dx;
+			y += g->sy;
 		}
 	}
 }
@@ -222,76 +224,80 @@ void	print_map(t_game *g, char **tab)
 	player_render(g, 0x00FF0000);
 }
 
-unsigned int	color_depth(t_game *g, int r, int gr, int b)
-{
-	int	color;
-
-	color = 0;
-	if (g->c_ray->texture == 'n')
-		return (*(int *)(g->adr_txt + g->off_y * g->txt_lsz + (g->off_x * (g->txt_bit / 8))));
-	if (g->c_ray->texture == 's')
-		return (*(int *)(g->adr_txt + g->off_y * g->txt_lsz + (g->off_x * (g->txt_bit / 8))));
-	if (g->c_ray->texture == 'e')
-		return (*(int *)(g->adr_txt + g->off_y * g->txt_lsz + (g->off_x * (g->txt_bit / 8))));
-	if (g->c_ray->texture == 'w')
-		return (*(int *)(g->adr_txt + g->off_y * g->txt_lsz + (g->off_x * (g->txt_bit / 8))));
-	if (g->c_ray->texture == 0)
-	{
-		r = 0;
-		gr = 0;
-		b = 0;
-	}
-	else
-	{
-		r = r - (100 * (g->c_ray->distance / g->wheight));
-		gr = gr - (100 * (g->c_ray->distance / g->wheight));
-		b = b - (100 * (g->c_ray->distance / g->wheight));
-	}
-	color |= r << 16;
-	color |= gr << 8;
-	color |= b;
-	return ((unsigned int)color);
-}
-
 void calculate_offset(t_game *g, int y, int wallheight)
 {
 	int	distance;
 
-	if (g->c_ray->texture == 'n' || g->c_ray->texture == 's')
-		g->off_x = g->c_ray->y_intercept - (g->c_ray->y_wall_pos * g->ts);
-	if (g->c_ray->texture == 'e' || g->c_ray->texture == 'w')
-		g->off_x = g->c_ray->x_intercept - (g->c_ray->y_wall_pos * g->ts);
+	if (g->texture == 'n' || g->texture == 's')
+		g->off_x = 64 - (g->x_intercept % 32) * 2 - 1;
+	else if (g->texture == 'e' || g->texture == 'w')
+		g->off_x = 64 - (g->y_intercept % 32) * 2 - 1;
 	distance = y + (wallheight / 2) - (g->wheight / 2);
 	g->off_y = distance * ((float)g->ts / wallheight);
-	//printf("off_x %d off_y %d\n", g->off_x, g->off_y);
+}
+
+void	color_the_sky_and_the_ground(t_game *g, int i, int y_s, int y_g)
+{
+	int	y;
+
+	y = 0;
+	while (y < g->wheight)
+	{
+		if (y < y_s)
+			img_put_pixel(i, y, g, g->sky_color);
+		if (y > y_g)
+			img_put_pixel(i, y, g, g->ground_color);
+		y++;
+	}
+}
+
+void	info_texture(t_game *g, int texture)
+{
+	if (texture == 'n')
+		g->adr_txt = mlx_get_data_addr(g->t_n, &g->txt_bit,
+	 		&g->txt_lsz, &g->txt_endi);
+	else if (texture == 's')
+		g->adr_txt = mlx_get_data_addr(g->t_s, &g->txt_bit,
+	 		&g->txt_lsz, &g->txt_endi);
+	else if (texture == 'e')
+		g->adr_txt = mlx_get_data_addr(g->t_e, &g->txt_bit,
+	 		&g->txt_lsz, &g->txt_endi);
+	else
+		g->adr_txt = mlx_get_data_addr(g->t_w, &g->txt_bit,
+	 		&g->txt_lsz, &g->txt_endi);
 }
 
 void	draw_ray(t_game *g, int i)
 {
-	int		y;
 	int		y_start;
 	int		y_finish;
 	float	wall_height;
 	float	projection_plane;
 
-	g->c_ray->distance = cos(g->c_ray->radr - g->rad) * g->c_ray->distance;
+	g->distance = cos(g->radr - g->rad) * g->distance;
 	projection_plane = ((g->wwidth / 2) / tan((g->fov / 2)));
-	wall_height = (g->ts / g->c_ray->distance) * projection_plane;
-	y = 0;
+	wall_height = (g->ts / g->distance) * projection_plane;
 	y_start = (g->wheight / 2) - (wall_height / 2);
 	y_finish = (g->wheight / 2) + (wall_height / 2);
-	while (y < g->wheight)
+	color_the_sky_and_the_ground(g, i, y_start, y_finish);
+	info_texture(g, g->texture);
+	while (y_start <= y_finish)
 	{
-		if (y < y_start)
-			img_put_pixel(i, y, g, g->sky_color);
-		if (y >= y_start && y <= y_finish)
+		if ((y_start > 0 && y_start < g->wheight
+				&& i > 0 && i < g->wwidth))
 		{
-			calculate_offset(g, y, wall_height);
-			img_put_pixel(i, y, g, color_depth(g, 255, 255, 255));
+			calculate_offset(g, y_start, wall_height);
+			if (g->off_x >= 0 && g->off_y >= 0 && g->off_x < 65 && g->off_y < 65)
+			{
+				g->adr[y_start * g->lsz + i * (g->bitsz / 8)]
+					= g->adr_txt[g->off_y * g->txt_lsz + g->off_x * (g->txt_bit / 8)];
+				g->adr[y_start * g->lsz + i * (g->bitsz / 8) + 1]
+					= g->adr_txt[g->off_y * g->txt_lsz + g->off_x * (g->txt_bit / 8) + 1];
+				g->adr[y_start * g->lsz + i * (g->bitsz / 8) + 2]
+					= g->adr_txt[g->off_y * g->txt_lsz + g->off_x * (g->txt_bit / 8) + 2];
+			}
 		}
-		if (y > y_finish)
-			img_put_pixel(i, y, g, g->ground_color);
-		y++;
+		y_start++;
 	}
 }
 
@@ -360,64 +366,6 @@ void	ft_find_distance(t_game *g, float rad)
 	calculate_texture(g);
 }
 
-void load_ray(t_game *g, int id)
-{
-	t_ray *ray;
-
-	if (id == 0)
-		g->c_ray = g->ray;
-	ray = g->c_ray;
-	ray->distance = g->distance;
-	ray->radr = g->radr;
-	ray->texture = g->texture;
-	ray->old_x = g->old_x;
-	ray->old_y = g->old_y;
-	ray->x_intercept = g->x_intercept;
-	ray->y_intercept = g->y_intercept;
-	ray->x_wall_pos = g->x_wall_pos;
-	ray->y_wall_pos = g->y_wall_pos;
-	g->c_ray = ray->next;
-}
-
-void print_rays(t_game *g)
-{
-	t_ray *ray;
-
-	ray = g->ray;
-	while (ray)
-	{
-		ft_printf("ray id %d  texture %d\n", ray->id, ray->texture);
-		ray = ray->next;
-	}
-}
-
-void	info_texture(t_game *g, int texture)
-{
-	if (texture == 'n')
-		g->adr_txt = mlx_get_data_addr(g->t_n->mlx_xmp, &g->txt_bit,
-	 		&g->txt_lsz, &g->txt_endi);
-	if (texture == 's')
-		g->adr_txt = mlx_get_data_addr(g->t_s->mlx_xmp, &g->txt_bit,
-	 		&g->txt_lsz, &g->txt_endi);
-	if (texture == 'e')
-		g->adr_txt = mlx_get_data_addr(g->t_e->mlx_xmp, &g->txt_bit,
-	 		&g->txt_lsz, &g->txt_endi);
-	if (texture == 'w')
-		g->adr_txt = mlx_get_data_addr(g->t_w->mlx_xmp, &g->txt_bit,
-	 		&g->txt_lsz, &g->txt_endi);
-}
-
-void	ray_draw(t_game *g)
-{
-	g->c_ray = g->ray;
-	while (g->c_ray)
-	{
-		info_texture(g, g->c_ray->texture);
-		draw_ray(g, g->c_ray->id);
-		g->c_ray = g->c_ray->next;
-	}
-}
-
 void ray_cast(t_game *g)
 {
 	int		id;
@@ -426,22 +374,17 @@ void ray_cast(t_game *g)
 
 	g->p->i = 1;
 	if (is_new_pos_lava(g, g->p->x, g->p->y))
-	 	return (rectangle_window_size(g, 255255255));
+		return (rectangle_window_size(g, 255255255));
 	step = (60 * (PI / 180)) / g->wwidth;
 	firstrad = g->rad - (step * (g->wwidth / 2));
 	id = 0;
-	while (id < g->wwidth)
+	while (id < 1200)
 	{
-		//ft_printf("here id %d\n", id);
-		//ray_distance_projection(g, &g->ray[id], firstrad);
 		ft_find_distance(g, firstrad);
-		load_ray(g, id);
-		//draw_ray(g, id);
+		draw_ray(g, id);
 		firstrad += step;
 		id++;
 	}
-	ray_draw(g);
-	//print_rays(g);
 }
 
 int	render(t_game *g)
