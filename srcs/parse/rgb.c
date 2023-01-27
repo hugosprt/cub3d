@@ -73,6 +73,9 @@ int	parse_rgb_color(t_game *game, char *s)
 		throw_error4(game);
 	}
 	if (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255)
+	{
+		printf("here\n");
 		throw_error4(game);
+	}
 	return ((r << 16) | (g << 8) | b);
 }

@@ -24,10 +24,9 @@ char	*parse(t_game *game)
 		if (ret != NULL)
 			free(tmp);
 	}
+	tab = ft_strjoin(tab, "\n \n \n \n \n \n \n\n \n \n \n \n \n \n1");
 	return (free(tmp), tab);
 }
-
-
 
 
 void parse_settings(t_game *game)
@@ -43,7 +42,10 @@ void parse_settings(t_game *game)
 	{
 		str = ft_strtrim(tab[i], " ");
 		if (!str)
+		{
+			printf("here\n");
 			throw_error3(game, *tab);
+		}
 		else
 		{
 			compas2 = ft_strldup(str, 1);
@@ -99,8 +101,12 @@ void parse_settings(t_game *game)
 			game->ceiling_rgb = ft_strtrim(str, " ");
 			game->truc_parse++;
 		}
+		else if (compas[0] == '\0')
+			game->truc++;
 		else if (game->truc_parse != 6)
+		{	
 			throw_error3(game, *tab);
+		}
 		else
 			break ;
 		i++;
@@ -120,7 +126,7 @@ void	final_map(t_game *game)
 	char	*str;
 	char	*str2;
 
-	j = 6;
+	j = game->truc + 6;
 	game->tab3 = malloc(sizeof(char **) * (find_longer_collum(game->tab) - 5));
 	if (!game->tab3)
 		return ;
@@ -128,7 +134,7 @@ void	final_map(t_game *game)
 	{
 		k = 0;
 		str = ft_strdup(game->tab2[j]);
-		game->tab3[j - 6] = ft_strdup(str);
+		game->tab3[j - (game->truc + 6)] = ft_strdup(str);
 		k = ft_strlen(str);
 		free(str);
 		while (k < find_longer_line(game->tab2))
@@ -141,7 +147,7 @@ void	final_map(t_game *game)
 		}
 		j++;
 	}
-	game->tab3[j - 6] = NULL;
+	game->tab3[j - (game->truc + 6)] = NULL;
 }
 
 void	main_parsing(t_game *game)
@@ -154,6 +160,7 @@ void	main_parsing(t_game *game)
 	add_border(game);
 	parse_settings(game);
 	final_map(game);
+	//print_map2(game);
 	if_zero(game, game->tab3);
 	is_line_left(game);
 	is_line_right(game);
