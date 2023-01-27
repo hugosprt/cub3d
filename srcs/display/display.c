@@ -24,12 +24,13 @@ void	rectangle_tilesize(t_game *g, unsigned int color)
 	int	x_finish;
 	int	y_finish;
 
-	x_finish = (g->x * g->ts) + g->ts;
-	y_finish = (g->y * g->ts) + g->ts;
-	x = g->x * g->ts;
+	x = (g->x * g->ts) % g->wwidth;
+	y = (g->y * g->ts) % g->wheight;
+	x_finish = ((x) + g->ts);
+	y_finish = ((y) + g->ts);
 	while (x <= x_finish)
 	{
-		y = g->y * g->ts;
+		y = (g->y * g->ts) % g->wheight;
 		while (y < y_finish)
 		{
 			img_put_pixel(x, y, g, color);
@@ -41,13 +42,18 @@ void	rectangle_tilesize(t_game *g, unsigned int color)
 
 void	ft_init_bsh(t_game *g, int fx, int fy)
 {
-	g->dx = abs(fx - (int)g->p->x);
-	if (g->p->x < fx)
+	int	x;
+	int	y;
+
+	x = ((int)g->p->x % g->wwidth);
+	y = ((int)g->p->y % g->wheight);
+	g->dx = abs(fx - x);
+	if (x < fx)
 		g->sx = 1;
 	else
 		g->sx = -1;
-	g->dy = abs(fy - (int)g->p->y);
-	if (g->p->y < fy)
+	g->dy = abs(fy - y);
+	if (y < fy)
 		g->sy = 1;
 	else
 		g->sy = -1;
@@ -93,8 +99,8 @@ void	ft_bsh_print(t_game *g, int fx, int fy)
 	int	y;
 
 	ft_init_bsh(g, fx, fy);
-	x = g->p->x;
-	y = g->p->y;
+	x = ((int)g->p->x % g->wwidth);
+	y = ((int)g->p->y % g->wheight);
 	while (1)
 	{
 		img_put_pixel(x, y, g, 0x00FF0000);
@@ -165,12 +171,12 @@ void	player_render(t_game *g, unsigned int color)
 	int	x_finish;
 	int	y_finish;
 
-	x_finish = g->p->x + 3;
-	y_finish = g->p->y + 3;
-	x = g->p->x - 2;
+	x_finish = (((int)g->p->x) % g->wwidth) + 3;
+	y_finish = (((int)g->p->y) % g->wheight) + 3;
+	x = (((int)g->p->x) % g->wwidth) - 2;
 	while (x <= x_finish)
 	{
-		y = g->p->y - 3;
+		y = (((int)g->p->y) % g->wheight) - 2;
 		while (y < y_finish)
 		{
 			img_put_pixel(x, y, g, color);
@@ -178,18 +184,54 @@ void	player_render(t_game *g, unsigned int color)
 		}
 		x++;
 	}
-	x = g->p->x - (cos(g->rad) * 7);
-	y = g->p->y - (sin(g->rad) * 7);
+	x = (((int)g->p->x % g->wwidth) - (cos(g->rad) * 7));
+	y = ((int)g->p->y % g->wheight) - (sin(g->rad) * 7);
 	ft_bsh_print(g, x, y);
+}
+
+int	minimap_move(t_game *g, int x, int y, char what)
+{
+	int	i;
+
+	x = g->p->x;
+	y = g->p->y;
+	i = 0;
+	if (what == 'y')
+	{
+		if (y >= g->wheight)
+		{
+			while (y >= g->wheight)
+			{
+				y -= g->wheight;
+				i++;
+			}
+			return (i * (g->wheight / g->ts));
+		}
+
+	}
+	if (what == 'x')
+	{
+		if (x >= g->wwidth)
+		{
+			while (x >= g->wwidth)
+			{
+				x -= g->wwidth;
+				i++;
+			}
+			return (i * (g->wwidth / g->ts));
+		}
+
+	}
+	return (0);
 }
 
 void	print_map(t_game *g, char **tab)
 {
 	g->p->i = 1;
-	g->y = -1;
+	g->y = -1 + minimap_move(g, 0, 0, 'y');
 	while (tab[++g->y])
 	{
-		g->x = -1;
+		g->x = -1 + minimap_move(g, 0, 0, 'x');
 		while (tab[g->y][++g->x])
 		{
 			if (tab[g->y][g->x] == '1')
@@ -382,7 +424,7 @@ int	render(t_game *g)
 		return (ft_putstr_fd("Error new image\n", 2), 1);
 	g->adr = mlx_get_data_addr(g->img, &g->bitsz, &g->lsz, &g->endi);
 	if (is_new_pos_lava(g, g->p->x, g->p->y))
-		print_map(g, g->tab3);
+		rectangle_window_size(g, 255255255);
 	else
 		ray_cast(g);
 	mlx_put_image_to_window(g->mlx, g->win, g->img, 0, 0);
