@@ -33,6 +33,12 @@ typedef struct s_game {
 	void		*t_s;
 	void		*t_e;
 	void		*t_w;
+
+    int     texture;
+    char    *floor_rgb;
+    char    *ceiling_rgb;
+    int     truc_parse;
+
 	void		*mlx;
 	void		*win;
 	int			ts;

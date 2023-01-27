@@ -66,6 +66,7 @@ void	init_game(t_game *g, char *file)
 	g->step = 0;
 	g->turn = 0;
 	g->fov = 60 * (PI / 180);
+
 	g->p = malloc(sizeof(t_player));
 	g->p->x = 0;
 	g->p->y = 0;
