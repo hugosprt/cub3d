@@ -17,29 +17,6 @@ static int	img_put_pixel(int x, int y, t_game *g, unsigned int color)
 	return (0);
 }
 
-void	rectangle_tilesize(t_game *g, unsigned int color)
-{
-	int	x;
-	int	y;
-	int	x_finish;
-	int	y_finish;
-
-	x = (g->x * g->ts) % g->wwidth;
-	y = (g->y * g->ts) % g->wheight;
-	x_finish = ((x) + g->ts);
-	y_finish = ((y) + g->ts);
-	while (x <= x_finish)
-	{
-		y = (g->y * g->ts) % g->wheight;
-		while (y < y_finish)
-		{
-			img_put_pixel(x, y, g, color);
-			y++;
-		}
-		x++;
-	}
-}
-
 void	ft_init_bsh(t_game *g, int fx, int fy)
 {
 	int	x;
@@ -74,7 +51,7 @@ int	is_new_pos_lavab(t_game *g, float x, float y)
 	tab_y = floor(y / g->ts);
 	if (tab_x < 0 || tab_y < 0 || tab_x > g->x_max || tab_y > g->y_max)
 		return (1);
-	if (g->tab3[tab_y][tab_x] != '1')
+	if (g->tab3[tab_y][tab_x] == '0')
 		return (0);
 	return (1);
 }
@@ -88,7 +65,7 @@ int	is_new_pos_lava(t_game *g, int x, int y)
 	tab_y = (int)floor(y / g->ts);
 	if (tab_x < 0 || tab_y < 0 || tab_x > g->x_max || tab_y > g->y_max)
 		return (1);
-	if (g->tab3[tab_y][tab_x] != '1')
+	if (g->tab3[tab_y][tab_x] == '0')
 		return (0);
 	return (1);
 }
@@ -205,7 +182,7 @@ int	minimap_move(t_game *g, int x, int y, char what)
 				y -= g->wheight;
 				i++;
 			}
-			return (i * (g->wheight / g->ts));
+			return (i);
 		}
 
 	}
@@ -218,21 +195,68 @@ int	minimap_move(t_game *g, int x, int y, char what)
 				x -= g->wwidth;
 				i++;
 			}
-			return (i * (g->wwidth / g->ts));
+			return (i);
 		}
 
 	}
 	return (0);
 }
 
+void	rectangle_tilesize(t_game *g, unsigned int color)
+{
+	int	x;
+	int	y;
+	int	x_finish;
+	int	y_finish;
+
+	if (((g->x * g->ts) % g->wwidth) + g->ts > g->wwidth)
+	{
+		x = 0;
+		x_finish = g->wwidth - (((g->x * g->ts) % g->wwidth) + g->ts);
+	}
+	else
+	{
+		x = (g->x * g->ts) % g->wwidth;
+		x_finish = x + g->ts;
+	}
+	if ((((g->y * g->ts) % g->wheight) + g->ts) > g->wheight)
+	{
+		y = 0;
+		y_finish = g->wheight - (((g->y * g->ts) % g->wheight) + g->ts);
+	}
+	else
+	{
+		y = (g->y * g->ts) % g->wheight;
+		y_finish = y + g->ts;
+	}
+	while (x <= x_finish)
+	{
+		if ((((g->y * g->ts) % g->wheight) + g->ts) > g->wheight)
+			y = 0;
+		else
+			y = (g->y * g->ts) % g->wheight;
+		while (y < y_finish)
+		{
+			img_put_pixel(x, y, g, color);
+			y++;
+		}
+		x++;
+	}
+}
+
 void	print_map(t_game *g, char **tab)
 {
+	int	off_y;
+	int	off_x;
+
+	off_y = minimap_move(g, 0, 0, 'y') * (g->wheight / g->ts);
+	off_x = minimap_move(g, 0, 0, 'x') * (g->wwidth / g->ts);
 	g->p->i = 1;
-	g->y = -1 + minimap_move(g, 0, 0, 'y');
-	while (tab[++g->y])
+	g->y = -1 + off_y;
+	while (tab[++g->y] && g->y < off_y + (g->wheight / g->ts))
 	{
-		g->x = -1 + minimap_move(g, 0, 0, 'x');
-		while (tab[g->y][++g->x])
+		g->x = -1 + off_x;
+		while (tab[g->y][++g->x] && g->x < off_x + (g->wwidth / g->ts))
 		{
 			if (tab[g->y][g->x] == '1')
 				rectangle_tilesize(g, 0x0000FF00);
@@ -424,7 +448,7 @@ int	render(t_game *g)
 		return (ft_putstr_fd("Error new image\n", 2), 1);
 	g->adr = mlx_get_data_addr(g->img, &g->bitsz, &g->lsz, &g->endi);
 	if (is_new_pos_lava(g, g->p->x, g->p->y))
-		rectangle_window_size(g, 255255255);
+		print_map(g, g->tab3);
 	else
 		ray_cast(g);
 	mlx_put_image_to_window(g->mlx, g->win, g->img, 0, 0);
