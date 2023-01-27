@@ -28,10 +28,7 @@ typedef struct s_game {
     char    *floor_rgb;
     char    *ceiling_rgb;
     int     truc_parse;
-    int     NO;
-    int     SO;
-    int     EA;
-    int     WE;
+
 	void		*mlx;
 	void		*win;
 	void		*img;

@@ -17,6 +17,7 @@ char	*parse(t_game *game)
 	while (ret != NULL)
 	{
 		tab = ft_strjoin(tab, ret);
+		tab = ft_strjoin(tab, " ");
 		tmp = ret;
 		i++;
 		ret = get_next_line(game->fd);
@@ -25,6 +26,9 @@ char	*parse(t_game *game)
 	}
 	return (free(tmp), tab);
 }
+
+
+
 
 void parse_settings(t_game *game)
 {
@@ -39,8 +43,6 @@ void parse_settings(t_game *game)
 	{
 		str = ft_strtrim(tab[i], " ");
 		if (!str)
-			throw_error3(game, *tab);
-		if (ft_strlen(str) <= 4)
 			throw_error3(game, *tab);
 		else
 		{
@@ -153,11 +155,10 @@ void	main_parsing(t_game *game)
 	parse_settings(game);
 	final_map(game);
 	if_zero(game, game->tab3);
-	is_collunm_top(game);
-	is_collunm_bot(game);
 	is_line_left(game);
 	is_line_right(game);
 	is_player(game);
+	is_collunm_bot(game);
 	game->sky_color = parse_rgb_color(game, game->ceiling_rgb);
 	game->ground_color = parse_rgb_color(game, game->floor_rgb);
 }

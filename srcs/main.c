@@ -55,12 +55,12 @@ void	init_game(t_game *g, char *file)
 	g->is_valid = 1;
 	g->fd = open(file, O_RDONLY);
 	g->ts = 64;
-	g->rotation_speed = 1;
+	g->rotation_speed = 2;
 	g->step_speed = 4;
 	g->side = 0;
 	g->step = 0;
 	g->turn = 0;
-	g->fov = 60 * (PI / 180);
+	g->fov = 75 * (PI / 180);
 	g->wwidth = 1200;
 	g->wheight = 800;
 	g->p = malloc(sizeof(t_player));
