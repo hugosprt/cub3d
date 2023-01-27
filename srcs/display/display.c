@@ -209,32 +209,19 @@ void	rectangle_tilesize(t_game *g, unsigned int color)
 	int	x_finish;
 	int	y_finish;
 
-	if (((g->x * g->ts) % g->wwidth) + g->ts > g->wwidth)
-	{
-		x = 0;
-		x_finish = g->wwidth - (((g->x * g->ts) % g->wwidth) + g->ts);
-	}
-	else
-	{
-		x = (g->x * g->ts) % g->wwidth;
-		x_finish = x + g->ts;
-	}
-	if ((((g->y * g->ts) % g->wheight) + g->ts) > g->wheight)
-	{
-		y = 0;
-		y_finish = g->wheight - (((g->y * g->ts) % g->wheight) + g->ts);
-	}
-	else
-	{
-		y = (g->y * g->ts) % g->wheight;
-		y_finish = y + g->ts;
-	}
+	y = (g->y - minimap_move(g, 0, 0, 'y') * floor((g->wheight / g->ts))) * g->ts;
+	x = (g->x - minimap_move(g, 0, 0, 'x') * floor((g->wwidth / g->ts))) * g->ts;
+	if (g->p->x > g->wwidth)
+		x -= 45;
+	if (g->p->y > g->wheight)
+		y -= 30;
+	x_finish = x + g->ts;
+	y_finish = y + g->ts;
 	while (x <= x_finish)
 	{
-		if ((((g->y * g->ts) % g->wheight) + g->ts) > g->wheight)
-			y = 0;
-		else
-			y = (g->y * g->ts) % g->wheight;
+		y = (g->y - minimap_move(g, 0, 0, 'y') * floor((g->wheight / g->ts))) * g->ts;
+		if (g->p->y > g->wheight)
+		y -= 30;
 		while (y < y_finish)
 		{
 			img_put_pixel(x, y, g, color);
@@ -249,14 +236,14 @@ void	print_map(t_game *g, char **tab)
 	int	off_y;
 	int	off_x;
 
-	off_y = minimap_move(g, 0, 0, 'y') * (g->wheight / g->ts);
-	off_x = minimap_move(g, 0, 0, 'x') * (g->wwidth / g->ts);
+	off_y = minimap_move(g, 0, 0, 'y') * floor((g->wheight / g->ts));
+	off_x = minimap_move(g, 0, 0, 'x') * floor((g->wwidth / g->ts));
 	g->p->i = 1;
 	g->y = -1 + off_y;
-	while (tab[++g->y] && g->y < off_y + (g->wheight / g->ts))
+	while (tab[++g->y] && g->y <= off_y + (g->wheight / g->ts))
 	{
 		g->x = -1 + off_x;
-		while (tab[g->y][++g->x] && g->x < off_x + (g->wwidth / g->ts))
+		while (tab[g->y][++g->x] && g->x <= off_x + floor((g->wwidth / g->ts)))
 		{
 			if (tab[g->y][g->x] == '1')
 				rectangle_tilesize(g, 0x0000FF00);
