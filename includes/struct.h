@@ -13,21 +13,6 @@ typedef struct s_player{
 	int		i;
 }	t_player;
 
-typedef struct s_ray{
-	int				id;
-	float			radr;
-	float			distance;
-	int				texture;
-	int				x_intercept;
-	int				y_intercept;
-	int				x_wall_pos;
-	int				y_wall_pos;
-	int				old_x;
-	int				old_y;
-	struct s_ray	*next;
-}	t_ray;
-
-
 typedef struct s_game {
 	int			x;
 	int			y;

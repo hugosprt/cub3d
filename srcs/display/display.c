@@ -62,11 +62,11 @@ int	is_new_pos_lavab(t_game *g, float x, float y)
 	int	tab_x;
 	int	tab_y;
 
-	if (x < 0 || x >= g->wwidth || y < 0 || y >= g->wheight)
+	if (x < 0 || x >= g->x_mmax || y < 0 || y >= g->y_mmax)
 		return (1);
 	tab_x = floor(x / g->ts);
 	tab_y = floor(y / g->ts);
-	if (tab_x < 0 || tab_y < 0 || tab_x > g->x_mmax || tab_y > g->y_mmax)
+	if (tab_x < 0 || tab_y < 0 || tab_x > g->x_max || tab_y > g->y_max)
 		return (1);
 	if (g->tab3[tab_y][tab_x] != '1')
 		return (0);
@@ -80,14 +80,14 @@ int	is_new_pos_lava(t_game *g, int x, int y)
 
 	tab_x = (int)floor(x / g->ts);
 	tab_y = (int)floor(y / g->ts);
-	if (tab_x < 0 || tab_y < 0 || tab_x > g->x_mmax || tab_y > g->y_mmax)
+	if (tab_x < 0 || tab_y < 0 || tab_x > g->x_max || tab_y > g->y_max)
 		return (1);
 	if (g->tab3[tab_y][tab_x] != '1')
 		return (0);
 	return (1);
 }
 
-void	ft_bsh_print(t_game *g, int fx, int fy, int vect)
+void	ft_bsh_print(t_game *g, int fx, int fy)
 {
 	int	x;
 	int	y;
@@ -98,7 +98,7 @@ void	ft_bsh_print(t_game *g, int fx, int fy, int vect)
 	while (1)
 	{
 		img_put_pixel(x, y, g, 0x00FF0000);
-		if ((x == fx && y == fy) || (is_new_pos_lavab(g, x, y) && vect))
+		if ((x == fx && y == fy))
 			break ;
 		g->e2 = g->er;
 		if (g->e2 > -g->dx)
@@ -126,7 +126,8 @@ void	hit_pos(t_game *g, int x, int y)
 	g->y_intercept = y;
 	g->x_wall_pos = floor(x / g->ts);
 	g->y_wall_pos = floor(y / g->ts);
-	g->distance = sqrt(((x - g->p->x) * (x - g->p->x)) + ((y - g->p->y) * (y - g->p->y)));
+	g->distance = sqrt(((x - g->p->x) * (x - g->p->x))
+			+ ((y - g->p->y) * (y - g->p->y)));
 }
 
 void	ft_bsh_distance(t_game *g, int fx, int fy)
@@ -141,10 +142,7 @@ void	ft_bsh_distance(t_game *g, int fx, int fy)
 	while (1)
 	{
 		if ((x == fx && y == fy) || is_new_pos_lavab(g, x, y))
-		{
-			hit_pos(g, x, y);
-			break ;
-		}
+			return (hit_pos(g, x, y));
 		old_pos(g, x, y);
 		g->e2 = g->er;
 		if (g->e2 > -g->dx)
@@ -169,7 +167,7 @@ void	player_render(t_game *g, unsigned int color)
 
 	x_finish = g->p->x + 3;
 	y_finish = g->p->y + 3;
-	x = g->p->x - 2; 
+	x = g->p->x - 2;
 	while (x <= x_finish)
 	{
 		y = g->p->y - 3;
@@ -182,7 +180,7 @@ void	player_render(t_game *g, unsigned int color)
 	}
 	x = g->p->x - (cos(g->rad) * 7);
 	y = g->p->y - (sin(g->rad) * 7);
-	ft_bsh_print(g, x, y, 0);
+	ft_bsh_print(g, x, y);
 }
 
 void	print_map(t_game *g, char **tab)
@@ -234,16 +232,31 @@ void	info_texture(t_game *g, int texture)
 {
 	if (texture == 'n')
 		g->adr_txt = mlx_get_data_addr(g->t_n, &g->txt_bit,
-	 		&g->txt_lsz, &g->txt_endi);
+				&g->txt_lsz, &g->txt_endi);
 	else if (texture == 's')
 		g->adr_txt = mlx_get_data_addr(g->t_s, &g->txt_bit,
-	 		&g->txt_lsz, &g->txt_endi);
+				&g->txt_lsz, &g->txt_endi);
 	else if (texture == 'e')
 		g->adr_txt = mlx_get_data_addr(g->t_e, &g->txt_bit,
-	 		&g->txt_lsz, &g->txt_endi);
+				&g->txt_lsz, &g->txt_endi);
 	else
 		g->adr_txt = mlx_get_data_addr(g->t_w, &g->txt_bit,
-	 		&g->txt_lsz, &g->txt_endi);
+				&g->txt_lsz, &g->txt_endi);
+}
+
+void txt_to_img_pixel_put(t_game *g, int i, int y_start)
+{
+	if (g->off_x >= 0 && g->off_y >= 0 && g->off_x < 65 && g->off_y < 65)
+	{
+		g->adr[y_start * g->lsz + i * (g->bitsz / 8)]
+			= g->adr_txt[g->off_y * g->txt_lsz + g->off_x * (g->txt_bit / 8)];
+		g->adr[y_start * g->lsz + i * (g->bitsz / 8) + 1]
+			= g->adr_txt[g->off_y * g->txt_lsz
+			+ g->off_x * (g->txt_bit / 8) + 1];
+		g->adr[y_start * g->lsz + i * (g->bitsz / 8) + 2]
+			= g->adr_txt[g->off_y * g->txt_lsz
+			+ g->off_x * (g->txt_bit / 8) + 2];
+	}
 }
 
 void	draw_ray(t_game *g, int i)
@@ -266,15 +279,7 @@ void	draw_ray(t_game *g, int i)
 				&& i > 0 && i < g->wwidth))
 		{
 			calculate_offset(g, y_start, wall_height);
-			if (g->off_x >= 0 && g->off_y >= 0 && g->off_x < 65 && g->off_y < 65)
-			{
-				g->adr[y_start * g->lsz + i * (g->bitsz / 8)]
-					= g->adr_txt[g->off_y * g->txt_lsz + g->off_x * (g->txt_bit / 8)];
-				g->adr[y_start * g->lsz + i * (g->bitsz / 8) + 1]
-					= g->adr_txt[g->off_y * g->txt_lsz + g->off_x * (g->txt_bit / 8) + 1];
-				g->adr[y_start * g->lsz + i * (g->bitsz / 8) + 2]
-					= g->adr_txt[g->off_y * g->txt_lsz + g->off_x * (g->txt_bit / 8) + 2];
-			}
+			txt_to_img_pixel_put(g, i, y_start);
 		}
 		y_start++;
 	}

@@ -34,24 +34,8 @@ void	init_player_position(t_game *g, char **tab)
 	}
 	g->x_max = ft_strlen(tab[0]) * g->ts;
 	g->y_max = ft_tablen(tab) * g->ts;
-}
-
-void	meke_tab(t_game *g)
-{
-	g->map = malloc(sizeof(char *) * 12);
-	g->map[0] = ft_strdup("111111111111111");
-	g->map[1] = ft_strdup("100000000110001");
-	g->map[2] = ft_strdup("111100000000001");
-	g->map[3] = ft_strdup("100000000011001");
-	g->map[4] = ft_strdup("101111110000001");
-	g->map[5] = ft_strdup("100110000000001");
-	g->map[6] = ft_strdup("1000000N0000111");
-	g->map[7] = ft_strdup("100000000011101");
-	g->map[8] = ft_strdup("111100000000001");
-	g->map[9] = ft_strdup("100000000000101");
-	g->map[10] = ft_strdup("111111111111111");
-	g->map[11] = NULL;
-	
+	g->x_mmax = g->ts * g->x_max;
+	g->y_mmax = g->ts * g->y_max;
 }
 
 void	init_game(t_game *g, char *file)
@@ -86,8 +70,6 @@ void	init_game(t_game *g, char *file)
 	g->p->x = 0;
 	g->p->y = 0;
 	g->p->i = 0;
-	
-	//meke_tab(g);
 }
 
 void	finish(t_game *g)

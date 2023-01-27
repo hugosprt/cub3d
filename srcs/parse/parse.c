@@ -352,6 +352,7 @@ void	final_map(t_game *game)
         }
         j++;
     }
+	game->tab3[j] = NULL;
 }
 
 void is_collunm_top(t_game *game)
