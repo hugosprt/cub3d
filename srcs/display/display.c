@@ -160,29 +160,6 @@ void	ft_bsh_distance(t_game *g, int fx, int fy)
 	}
 }
 
-void	fov(t_game *g)
-{
-	int		x;
-	int		y;
-	float	lastrad;
-	float	firstrad;
-	float	step;
-
-	step = (60 * (PI / 180)) / g->wwidth;
-	firstrad = g->rad - (step * (g->wwidth / 2));
-	lastrad = g->rad + (step * (g->wwidth / 2));
-	while (firstrad <= lastrad)
-	{
-		x = g->p->x - (cos(firstrad) * 1000);
-		y = g->p->y - (sin(firstrad) * 1000);
-		ft_bsh_print(g, x, y, 1);
-		firstrad += step;
-	}
-	x = g->p->x - (cos(g->rad) * 7);
-	y = g->p->y - (sin(g->rad ) * 7);
-	ft_bsh_print(g, x, y, 0);
-}
-
 void	player_render(t_game *g, unsigned int color)
 {
 	int	x;
@@ -192,7 +169,7 @@ void	player_render(t_game *g, unsigned int color)
 
 	x_finish = g->p->x + 3;
 	y_finish = g->p->y + 3;
-	x = g->p->x - 2;
+	x = g->p->x - 2; 
 	while (x <= x_finish)
 	{
 		y = g->p->y - 3;
@@ -203,7 +180,9 @@ void	player_render(t_game *g, unsigned int color)
 		}
 		x++;
 	}
-	fov(g);
+	x = g->p->x - (cos(g->rad) * 7);
+	y = g->p->y - (sin(g->rad) * 7);
+	ft_bsh_print(g, x, y, 0);
 }
 
 void	print_map(t_game *g, char **tab)
@@ -229,9 +208,9 @@ void calculate_offset(t_game *g, int y, int wallheight)
 	int	distance;
 
 	if (g->texture == 'n' || g->texture == 's')
-		g->off_x = 64 - (g->x_intercept % 32) * 2 - 1;
+		g->off_x = (g->x_intercept % g->ts);
 	else if (g->texture == 'e' || g->texture == 'w')
-		g->off_x = 64 - (g->y_intercept % 32) * 2 - 1;
+		g->off_x = (g->y_intercept % g->ts);
 	distance = y + (wallheight / 2) - (g->wheight / 2);
 	g->off_y = distance * ((float)g->ts / wallheight);
 }
