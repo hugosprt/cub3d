@@ -28,7 +28,7 @@ void	init_player_position(t_game *g, char **tab)
 				g->p->x = (g->x * g->ts) + (g->ts / 2);
 				g->p->y = (g->y * g->ts) + (g->ts / 2);
 				g->rad = where_is_player_facing(tab[g->y][g->x]);
-				g->map[g->y][g->x] = '0';
+				g->tab3[g->y][g->x] = '0';
 			}
 		}
 	}
@@ -51,8 +51,7 @@ void	meke_tab(t_game *g)
 	g->map[9] = ft_strdup("100000000000101");
 	g->map[10] = ft_strdup("111111111111111");
 	g->map[11] = NULL;
-	g->x_mmax = ft_strlen(g->map[0]);
-	g->y_mmax = ft_tablen(g->map) - 1;
+	
 }
 
 void	init_game(t_game *g, char *file)
@@ -87,7 +86,8 @@ void	init_game(t_game *g, char *file)
 	g->p->x = 0;
 	g->p->y = 0;
 	g->p->i = 0;
-	meke_tab(g);
+	
+	//meke_tab(g);
 }
 
 void	finish(t_game *g)
@@ -217,8 +217,10 @@ t_game	*game;
 	game = malloc((sizeof (t_game)));
 	init_game(game, "map2.cub");
 	main_parsing(game);
+	game->x_mmax = ft_strlen(game->tab3[0]);
+	game->y_mmax = ft_tablen(game->tab3) - 1;
 	//print_map2(game);
-	init_player_position(game, game->map);
+	init_player_position(game, game->tab3);
 	//print_tab(game->map);
 	if (ac != 2)
 		parse_error();

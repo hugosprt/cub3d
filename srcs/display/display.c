@@ -68,7 +68,7 @@ int	is_new_pos_lavab(t_game *g, float x, float y)
 	tab_y = floor(y / g->ts);
 	if (tab_x < 0 || tab_y < 0 || tab_x > g->x_mmax || tab_y > g->y_mmax)
 		return (1);
-	if (g->map[tab_y][tab_x] != '1')
+	if (g->tab3[tab_y][tab_x] != '1')
 		return (0);
 	return (1);
 }
@@ -82,7 +82,7 @@ int	is_new_pos_lava(t_game *g, int x, int y)
 	tab_y = (int)floor(y / g->ts);
 	if (tab_x < 0 || tab_y < 0 || tab_x > g->x_mmax || tab_y > g->y_mmax)
 		return (1);
-	if (g->map[tab_y][tab_x] != '1')
+	if (g->tab3[tab_y][tab_x] != '1')
 		return (0);
 	return (1);
 }
@@ -377,7 +377,7 @@ int	render(t_game *g)
 		return (ft_putstr_fd("Error new image\n", 2), 1);
 	g->adr = mlx_get_data_addr(g->img, &g->bitsz, &g->lsz, &g->endi);
 	if (is_new_pos_lava(g, g->p->x, g->p->y))
-		print_map(g, g->map);
+		print_map(g, g->tab3);
 	else
 		ray_cast(g);
 	mlx_put_image_to_window(g->mlx, g->win, g->img, 0, 0);
