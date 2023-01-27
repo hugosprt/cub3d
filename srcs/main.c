@@ -42,6 +42,7 @@ void	init_game(t_game *g, char *file)
 {
 	g->wwidth = 1200;
 	g->wheight = 800;
+	g->truc = 0;
 	g->x = 0;
 	g->y = 0;
 	g->no_texture = NULL;
@@ -210,8 +211,8 @@ t_game	*game;
 	game->mlx = mlx_init();
 	if (game->mlx == NULL)
 		parse_error();
-	game->win = mlx_new_window(game->mlx, game->wwidth, game->wheight, "CUB3D");
 	init_textures(game);
+	game->win = mlx_new_window(game->mlx, game->wwidth, game->wheight, "CUB3D");
 	mlx_hook(game->win, 02, 1l << 0, key_pressed, game);
 	mlx_hook(game->win, 3, 1L << 1, key_released, game);
 	mlx_loop_hook(game->mlx, render, game);

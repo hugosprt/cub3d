@@ -16,6 +16,7 @@ typedef struct s_player{
 typedef struct s_game {
 	int			x;
 	int			y;
+	int			truc;
 	int			is_valid;
 	char		is_player;
 	int			fd;

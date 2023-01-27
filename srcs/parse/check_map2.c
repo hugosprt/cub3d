@@ -17,7 +17,6 @@ void	is_collunm_top(t_game *game)
 			if (game->tab3[i][j] != ' ')
 				throw_error4(game);
 			i++;
-			printf("%d\n",i);
 		}
 		j++;
 	}
@@ -51,10 +50,12 @@ void	is_line_left(t_game *game)
 {
 	int	i;
 	int	j;
+	int	size;
 
+	size = find_longer_collum(game->tab3) - 1;
 	i = 0;
 	j = 0;
-	while (game->tab3[j][i] && game->tab3[j])
+	while (game->tab3[j][i] && game->tab3[j] && j < size)
 	{
 		i = 0;
 		while (game->tab3[j][i] && game->tab3[j][i] != '1')
@@ -72,11 +73,13 @@ void	is_line_right(t_game *game)
 	int	i;
 	int	j;
 	int	size;
+	int size2;
 
 	size = find_longer_line(game->tab3);
+	size2 = find_longer_collum(game->tab3) - 1;
 	i = 0;
 	j = 0;
-	while (game->tab3[j][i] && game->tab3[j])
+	while (game->tab3[j][i] && game->tab3[j]  && j < size2)
 	{
 		i = 1;
 		while (game->tab3[j][i] && game->tab3[j][size - i] != '1')
