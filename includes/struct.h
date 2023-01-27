@@ -10,7 +10,6 @@
 typedef struct s_player{
 	float	x;
 	float	y;
-	int		a;
 	int		i;
 }	t_player;
 
@@ -71,8 +70,8 @@ typedef struct s_game {
 	int			sky_color;
 	t_player	*p;
 	float		fov;
-	float		step_speed;
-	int			rotation_speed;
+	int			step_speed;
+	float		rotation_speed;
 	int			step;
 	int			side;
 	int			turn;
@@ -102,6 +101,9 @@ typedef struct s_game {
 	int			off_x;
 	int			off_y;
 	char		*adr_txt;
+	int			txt_lsz;
+	int			txt_bit;
+	int			txt_endi;
 }	t_game;
 
 #endif

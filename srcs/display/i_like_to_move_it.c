@@ -6,7 +6,7 @@
 /*   By: rpol <rpol@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/12 17:31:45 by hspriet           #+#    #+#             */
-/*   Updated: 2023/01/25 01:33:55 by rpol             ###   ########.fr       */
+/*   Updated: 2023/01/27 01:45:51 by rpol             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,19 +58,12 @@ int	is_new_pos_lava_move(t_game *g, float x, float y)
 // 	}
 // }
 
-void	rad2angle(t_game *g)
+float	normalise_rad(float rad)
 {
-	if (g->p->a < 0)
-	{
-		g->p->a += 360;
-		rad2angle(g);
-	}
-	if (g->p->a > 360)
-	{
-		g->p->a -= 360;
-		rad2angle(g);
-	}
-	g->rad = (g->p->a * (PI / 180));
+	rad = remainder(rad, 2 * PI);
+	if (rad < 0)
+		rad = (2 * PI) + rad;
+	return (rad);
 }
 
 void	update_player(t_game *g)
@@ -78,8 +71,7 @@ void	update_player(t_game *g)
 	float		new_x;
 	float		new_y;
 
-	g->p->a += g->turn * g->rotation_speed;
-	rad2angle(g);
+	g->rad += (float)g->turn * g->rotation_speed;
 	new_x = g->p->x - (sin(g->rad) * g->side * g->step_speed);
 	new_y = g->p->y + (cos(g->rad) * g->side * g->step_speed);
 	if (g->side == 0)

@@ -1,17 +1,17 @@
 #include "../includes/cub.h"
 
 
-int	where_is_player_facing(char direction)
+float	where_is_player_facing(char direction)
 {
 	if (direction == 'N')
-		return (90);
+		return (PI / 2);
 	if (direction == 'S')
-		return (270);
+		return (PI);
 	if (direction == 'W')
-		return (180);
+		return ((3 * PI) / 2);
 	if (direction == 'E')
-		return (0);
-	return (90);
+		return (2 * PI);
+	return (PI / 2);
 }
 
 void	init_player_position(t_game *g, char **tab)
@@ -27,8 +27,7 @@ void	init_player_position(t_game *g, char **tab)
 			{
 				g->p->x = (g->x * g->ts) + (g->ts / 2);
 				g->p->y = (g->y * g->ts) + (g->ts / 2);
-				g->p->a = where_is_player_facing(tab[g->y][g->x]);
-				g->rad = (g->p->a * (PI / 180));
+				g->rad = where_is_player_facing(tab[g->y][g->x]);
 				g->map[g->y][g->x] = '0';
 			}
 		}
@@ -97,7 +96,7 @@ void	init_game(t_game *g, char *file)
 	g->is_valid = 1;
 	g->fd = open(file, O_RDONLY);
 	g->ts = 64;
-	g->rotation_speed = 1;
+	g->rotation_speed = PI / 90;
 	g->step_speed = 4;
 	g->side = 0;
 	g->step = 0;
@@ -106,7 +105,6 @@ void	init_game(t_game *g, char *file)
 	g->p = malloc(sizeof(t_player));
 	g->p->x = 0;
 	g->p->y = 0;
-	g->p->a = 0;
 	g->p->i = 0;
 	meke_tab(g);
 }
