@@ -27,14 +27,6 @@ typedef struct s_ray{
 	struct s_ray	*next;
 }	t_ray;
 
-typedef struct s_texture{
-	int			lsz;
-	int			bitsz;
-	int			endi;
-	void		*mlx_xmp;
-	void		*data;
-	char		*adr;
-}	t_texture;
 
 typedef struct s_game {
 	int			x;
@@ -52,10 +44,10 @@ typedef struct s_game {
 	char		*floor_rgb;
 	char		*ceiling_rgb;
 	int			truc_parse;
-	t_texture	*t_n;
-	t_texture	*t_s;
-	t_texture	*t_e;
-	t_texture	*t_w;
+	void		*t_n;
+	void		*t_s;
+	void		*t_e;
+	void		*t_w;
 	void		*mlx;
 	void		*win;
 	int			ts;
@@ -83,7 +75,6 @@ typedef struct s_game {
 	int			sy;
 	int			er;
 	int			e2;
-	t_ray		*ray;
 	float		radr;
 	float		distance;
 	int			x_intercept;
@@ -93,7 +84,6 @@ typedef struct s_game {
 	int			old_x;
 	int			old_y;
 	int			texture;
-	t_ray		*c_ray;
 	char		**map;
 	int			x_max;
 	int			y_max;
