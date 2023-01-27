@@ -1,6 +1,5 @@
 #include "../../includes/cub.h"
 
-
 void	throw_error(t_game *game, char *tab)
 {
 	ft_printf("error fd\n");

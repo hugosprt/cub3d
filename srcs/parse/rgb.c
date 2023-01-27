@@ -40,11 +40,11 @@ int	check_valid_input(const char *s, int *r, int *g, int *b)
 
 int	how_manyvirgule(char *s)
 {
-	int i;
-	int count;
+	int	i;
+	int	count;
 
 	count = 0;
-	i= 0;
+	i = 0;
 	while (s[i])
 	{
 		if (s[i] == ',')
@@ -69,12 +69,10 @@ int	parse_rgb_color(t_game *game, char *s)
 		throw_error4(game);
 	if (check_valid_input(s, &r, &g, &b) == -1)
 	{
-		printf("here\n");
 		throw_error4(game);
 	}
 	if (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255)
 	{
-		printf("here\n");
 		throw_error4(game);
 	}
 	return ((r << 16) | (g << 8) | b);
