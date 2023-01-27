@@ -35,6 +35,24 @@ void		free_magic(t_game *g);
 void		parse_error(void);
 int			parse_rgb_color(t_game *game, char *s);
 /* DISPLAY.C */
+int		ft_tablen(char **tab);
+
+int		is_new_pos_lava(t_game *g, int x, int y);
+
+void	init_game(t_game *g, char *file);
+
+void	finish(t_game *g);
+
+void	print_tiles(t_game *a, char **tab);
+
+int		render(t_game *g);
+
+/* I_LIKE_TO_MOVE_IT.C */
+
+void	update_player(t_game *g);
+
+
+int	is_new_pos_lava_move(t_game *g, float x, float y);
 void		init_game(t_game *g, char *file);
 void		finish(t_game *g);
 void		print_tiles(t_game *a, char **tab);
