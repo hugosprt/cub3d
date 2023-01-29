@@ -15,6 +15,11 @@ SRCS         = srcs/main.c \
 				srcs/parse/utils.c \
 				srcs/parse/rgb.c \
 				srcs/display/display.c \
+				srcs/display/player_init.c \
+				srcs/display/textures.c \
+				srcs/display/mini_map.c \
+				srcs/display/pixel_puts.c \
+				srcs/display/ray_casting.c \
 				srcs/display/i_like_to_move_it.c \
 
 OBJS        = $(SRCS:.c=.o)
