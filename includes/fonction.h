@@ -3,9 +3,7 @@
 
 void		parse_error(void);
 char		*parse(t_game *game);
-void		struct_init(t_game *game, char *file);
 void		final_map(t_game *game);
-int			add_value(t_game *game, char *str);
 void		parse_settings(t_game *game);
 void		is_collunm_top(t_game *game);
 void		is_collunm_bot(t_game *game);
@@ -14,7 +12,6 @@ void		is_line_right(t_game *game);
 void		if_zero(t_game *game, char **tab3);
 void		is_player(t_game *game);
 void		main_parsing(t_game *game);
-void		print_map2(t_game *game);
 void		add_border(t_game *game);
 void		throw_error(t_game *game, char *tab);
 void		throw_error2(t_game *game, char *tab);
@@ -45,6 +42,10 @@ void	parse_help6(t_game *game, char *str, char *compas, char *compas2);
 char	*make_str(t_game *game, int i);
 
 /* SRCS/MAIN.C */
+
+void		is_cub(int ac, char **av);
+
+void		is_xpm(t_game *g, char *xpm);
 
 void		init_game(t_game *g, char *file);
 
