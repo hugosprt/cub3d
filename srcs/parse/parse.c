@@ -28,94 +28,52 @@ char	*parse(t_game *game)
 }
 
 
+
+
+
+int parse_select(t_game *game, char *str, char *compas, char *compas2)
+{	
+	if (!ft_strcmp(compas, "NO"))
+		parse_help(game, str, compas, compas2);
+	else if (!ft_strcmp(compas, "SO"))
+		parse_help2(game, str, compas, compas2);
+	else if (!ft_strcmp(compas, "WE"))
+		parse_help3(game, str, compas, compas2);
+	else if (!ft_strcmp(compas, "EA"))
+		parse_help4(game, str, compas, compas2);
+	else if (!ft_strcmp(compas2, "F"))
+		parse_help5(game, str, compas, compas2);
+	else if (!ft_strcmp(compas2, "C"))
+		parse_help6(game, str, compas, compas2);
+	else if (compas[0] == '\0')
+		game->truc++;
+	else if (game->truc_parse != 6)
+		leave(game, str, compas, compas2);
+	else
+		return (0);
+	return (1);
+}
+
 void parse_settings(t_game *game)
 {
-	char 	**tab;
-	char 	*str;
+	char	*str;
 	char	*compas;
 	char	*compas2;
-	int		i = 0;
+	int		i;
 
-	tab = game->tab2;
-	while (tab[i])
+	i = -1;
+	while (game->tab2[++i])
 	{
-		str = ft_strtrim(tab[i], " ");
-		if (!str)
-		{
-			printf("here\n");
-			throw_error3(game, *tab);
-		}
-		else
-		{
-			compas2 = ft_strldup(str, 1);
-			compas = ft_strldup(str, 2);
-		}
-		if (!compas)
-			throw_error3(game, *tab);
-		if (!ft_strcmp(compas, "NO"))
-		{
-			str = ft_substr(str, 2, ft_strlen(str) - 2);
-			if (game->no_texture)
-				throw_error3(game, *tab);
-			game->no_texture = ft_strtrim(str, " ");
-			game->truc_parse++;
-		}
-		else if (!ft_strcmp(compas, "SO"))
-		{
-			str = ft_substr(str, 2, ft_strlen(str) - 2);
-			if (game->so_texture)
-				throw_error3(game, *tab);
-			game->so_texture = ft_strtrim(str, " ");
-			game->truc_parse++;
-		}
-		else if (!ft_strcmp(compas, "WE"))
-		{
-			str = ft_substr(str, 2, ft_strlen(str) - 2);
-			if (game->we_texture)
-				throw_error3(game, *tab);
-			game->we_texture = ft_strtrim(str, " ");
-			game->truc_parse++;
-		}
-		else if (!ft_strcmp(compas, "EA"))
-		{
-			str = ft_substr(str, 2, ft_strlen(str) - 2);
-			if (game->ea_texture)
-				throw_error3(game, *tab);
-			game->ea_texture = ft_strtrim(str, " ");
-			game->truc_parse++;
-		}
-		else if (!ft_strcmp(compas2, "F"))
-		{
-			str = ft_substr(str, 1, ft_strlen(str) - 1);
-			if (game->floor_rgb)
-				throw_error3(game, *tab);
-			game->floor_rgb = ft_strtrim(str, " ");
-			game->truc_parse++;
-		}
-		else if (!ft_strcmp(compas2, "C"))
-		{
-			str = ft_substr(str, 1, ft_strlen(str) - 1);
-			if (game->ceiling_rgb)
-				throw_error3(game, *tab);
-			game->ceiling_rgb = ft_strtrim(str, " ");
-			game->truc_parse++;
-		}
-		else if (compas[0] == '\0')
-			game->truc++;
-		else if (game->truc_parse != 6)
-		{	
-			throw_error3(game, *tab);
-		}
+		str = make_str(game, i);
+		compas2 = ft_strldup(str, 1);
+		compas = ft_strldup(str, 2);
+		if (parse_select(game, str, compas, compas2))
+			i = i - 1 + 1;
 		else
 			break ;
-		i++;
-		free(compas2);
-		free(compas);
-		free(str);
+		free_help(str, compas, compas2);
 	}
-	free(str);
-	free(compas2);
-	free(compas);
+	free_help(str, compas, compas2);
 }
 
 void	final_map(t_game *game)
@@ -159,7 +117,7 @@ void	main_parsing(t_game *game)
 	add_border(game);
 	parse_settings(game);
 	final_map(game);
-	print_map2(game);
+	// print_map2(game);
 	if_zero(game, game->tab3);
 	is_line_left(game);
 	is_line_right(game);

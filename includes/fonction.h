@@ -22,6 +22,7 @@ void		throw_error3(t_game *game, char *tab);
 void		throw_error4(t_game *game);
 void		throw_error66(t_game *game);
 void		free_magic(t_game *g);
+void	free_help(char *str, char *compas, char *compas2);
 void		free_tab(char **tab);
 char		*ft_strjoin4(char const *s1, char const *s2);
 int			ft_isnum(char *str);
@@ -29,11 +30,19 @@ char		*ft_strldup(char *source, int size);
 int			ft_strcmp(const char *s1, const char *s2);
 int			find_longer_line(char	**map);
 int			find_longer_collum(char	**map);
-
+void	throw_error5(t_game *g);
+void	leave(t_game *game, char *str, char *compas, char * compas2);
 void		fail_finish(t_game *g);
 void		free_magic(t_game *g);
 void		parse_error(void);
 int			parse_rgb_color(t_game *game, char *s);
+void	parse_help(t_game *game, char *str, char *compas, char *compas2);
+void	parse_help2(t_game *game, char *str, char *compas, char *compas2);
+void	parse_help3(t_game *game, char *str, char *compas, char *compas2);
+void	parse_help4(t_game *game, char *str, char *compas, char *compas2);
+void	parse_help5(t_game *game, char *str, char *compas, char *compas2);
+void	parse_help6(t_game *game, char *str, char *compas, char *compas2);
+char	*make_str(t_game *game, int i);
 
 /* SRCS/MAIN.C */
 

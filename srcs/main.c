@@ -51,7 +51,6 @@ int	main(int ac, char **av)
 {
 	t_game	*game;
 
-	(void) ac;
 	(void) av;
 	game = malloc((sizeof (t_game)));
 	init_game(game, av[1]);
