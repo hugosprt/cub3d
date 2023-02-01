@@ -74,9 +74,12 @@ void	finish(t_game *g)
 		mlx_destroy_window(g->mlx, g->win);
 		ft_printf("hop c fini\n");
 	}
-	mlx_destroy_display(g->mlx);
+	if (g->mlx != NULL)
+	{
+		mlx_destroy_display(g->mlx);
+		free(g->mlx);
+	}
 	free(g->p);
-	free(g->mlx);
 	free(g);
 	exit(EXIT_SUCCESS);
 }
@@ -93,7 +96,7 @@ int	main(int ac, char **av)
 	init_player_position(game, game->tab3);
 	game->mlx = mlx_init();
 	if (game->mlx == NULL)
-		parse_error();
+		mlx_fail_exit(game);
 	init_textures(game);
 	game->win = mlx_new_window(game->mlx, game->wwidth, game->wheight, "CUB3D");
 	mlx_hook(game->win, 02, 1l << 0, key_pressed, game);

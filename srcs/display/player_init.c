@@ -3,14 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   player_init.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rpol <rpol@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: rpol <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/29 22:46:25 by rpol              #+#    #+#             */
-/*   Updated: 2023/01/29 23:06:49 by rpol             ###   ########.fr       */
+/*   Updated: 2023/02/01 19:29:42 by rpol             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub.h"
+
+void	mlx_fail_exit(t_game *g)
+{
+	ft_putstr_fd("Error, MLX could not be initialised\n", 2);
+	finish(g);
+}
 
 int	ft_tablen(char **tab)
 {

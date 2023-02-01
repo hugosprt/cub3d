@@ -53,6 +53,8 @@ void		finish(t_game *g);
 
 /* SRCS/DISPLAY/PLAYER_INIT.C */
 
+void		mlx_fail_exit(t_game *g);
+
 int			ft_tablen(char **tab);
 
 void		init_player_param(t_game *g);
