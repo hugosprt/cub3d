@@ -14,7 +14,7 @@ void		is_player(t_game *game);
 void		main_parsing(t_game *game);
 void		add_border(t_game *game);
 void		throw_error(t_game *game, char *tab);
-void		throw_error2(t_game *game, char *tab);
+void		throw_error2(t_game *game);
 void		throw_error3(t_game *game, char *tab);
 void		throw_error4(t_game *game);
 void		throw_error66(t_game *game);
@@ -33,12 +33,12 @@ void		fail_finish(t_game *g);
 void		free_magic(t_game *g);
 void		parse_error(void);
 int			parse_rgb_color(t_game *game, char *s);
-void	parse_help(t_game *game, char *str, char *compas, char *compas2);
-void	parse_help2(t_game *game, char *str, char *compas, char *compas2);
-void	parse_help3(t_game *game, char *str, char *compas, char *compas2);
-void	parse_help4(t_game *game, char *str, char *compas, char *compas2);
-void	parse_help5(t_game *game, char *str, char *compas, char *compas2);
-void	parse_help6(t_game *game, char *str, char *compas, char *compas2);
+void	parse_help(t_game *game, char *str);
+void	parse_help2(t_game *game, char *str);
+void	parse_help3(t_game *game, char *str);
+void	parse_help4(t_game *game, char *str);
+void	parse_help5(t_game *game, char *str);
+void	parse_help6(t_game *game, char *str);
 char	*make_str(t_game *game, int i);
 
 /* SRCS/MAIN.C */

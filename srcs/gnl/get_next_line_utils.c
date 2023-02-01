@@ -3,13 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hspriet <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: hspriet <hspriet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/16 14:28:07 by hspriet           #+#    #+#             */
-/*   Updated: 2022/01/05 15:54:26 by hspriet          ###   ########.fr       */
+/*   Updated: 2023/02/01 17:46:43 by hspriet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "get_next_line.h"
+
 #include "../../includes/cub.h"
 
 int	ft_strlen_buff(char *str)
