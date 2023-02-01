@@ -64,6 +64,8 @@ void	is_line_left(t_game *game)
 				throw_error4(game);
 			i++;
 		}
+		if (i == find_longer_line(game->tab3))
+			throw_error4(game);
 		j++;
 	}
 }
