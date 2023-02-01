@@ -4,6 +4,7 @@ void	throw_error(t_game *game, char *tab)
 {
 	ft_printf("Error, can't open map\n");
 	free(tab);
+	free(game->p);
 	free(game);
 	exit(EXIT_FAILURE);
 }
