@@ -159,7 +159,6 @@ void	main_parsing(t_game *game)
 	add_border(game);
 	parse_settings(game);
 	final_map(game);
-	print_map2(game);
 	if_zero(game, game->tab3);
 	is_line_left(game);
 	is_line_right(game);

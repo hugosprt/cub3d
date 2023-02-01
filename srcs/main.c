@@ -1,5 +1,39 @@
 #include "../includes/cub.h"
 
+void	is_cub(int ac, char **av)
+{
+	int		l;
+	char	*s;
+
+	if (ac != 2)
+		return (ft_putstr_fd("Error, need 1 map.cub as agument!\n", 2), exit(2));
+	l = ft_strlen(av[1]);
+	s = av[1];
+	if (l > 4 && s[l - 1] == 'b' && s[l - 2] == 'u')
+	{
+		if (s[l - 3] == 'c' && s[l - 4] == '.')
+			return ;
+	}
+	ft_putstr_fd("Error, need a map.cub as agument!\n", 2);
+	exit(2);
+}
+
+void	is_xpm(t_game *g, char *xpm)
+{
+	int		l;
+	char	*s;
+
+	l = ft_strlen(xpm);
+	s = xpm;
+	if (l > 4 && s[l - 1] == 'm' && s[l - 2] == 'p')
+	{
+		if (s[l - 3] == 'x' && s[l - 4] == '.')
+			return ;
+	}
+	ft_putstr_fd("Error, texture needs to be .xpm\n", 2);
+	finish(g);
+}
+
 void	init_game(t_game *g, char *file)
 {
 	g->wwidth = 1200;
@@ -53,12 +87,11 @@ int	main(int ac, char **av)
 
 	(void) ac;
 	(void) av;
+	is_cub(ac, av);
 	game = malloc((sizeof (t_game)));
 	init_game(game, av[1]);
 	main_parsing(game);
 	init_player_position(game, game->tab3);
-	if (ac != 2)
-		parse_error();
 	game->mlx = mlx_init();
 	if (game->mlx == NULL)
 		parse_error();
