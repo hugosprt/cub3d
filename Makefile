@@ -5,7 +5,6 @@ CFLAGS        = -Wall -Werror -Wextra -g
 SRCS         = srcs/main.c \
 				srcs/gnl/get_next_line.c\
 				srcs/gnl/get_next_line_utils.c\
-				srcs/errors/error.c \
 				srcs/parse/parse.c \
 				srcs/parse/parse2.c \
 				srcs/parse/parse3.c \
