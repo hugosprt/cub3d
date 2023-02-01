@@ -6,7 +6,7 @@
 /*   By: rpol <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/29 22:31:38 by rpol              #+#    #+#             */
-/*   Updated: 2023/02/01 16:17:24 by rpol             ###   ########.fr       */
+/*   Updated: 2023/02/01 17:10:47 by rpol             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ void	*texture_init(t_game *g, char *path_texture)
 
 	is_xpm(g, path_texture);
 	t = g->ts;
+	t1 = 0;
 	txt = mlx_xpm_file_to_image(g->mlx, path_texture, &t, &t1);
 	if (t != g->ts || t1 != g->ts)
 	{
