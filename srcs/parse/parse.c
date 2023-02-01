@@ -24,12 +24,9 @@ char	*parse(t_game *game)
 		if (ret != NULL)
 			free(tmp);
 	}
+	tab = ft_strjoin(tab, "1");
 	return (free(tmp), tab);
 }
-
-
-
-
 
 int parse_select(t_game *game, char *str, char *compas, char *compas2)
 {	

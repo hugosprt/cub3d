@@ -34,6 +34,13 @@ void	if_zero(t_game *game, char **tab3)
 	}
 }
 
+int	ft_isbinary(char c)
+{
+	if (c == '1' || c == '0')
+		return (1);
+	return (0);
+}
+
 void	is_player(t_game *game)
 {
 	int		i;
@@ -56,12 +63,14 @@ void	is_player(t_game *game)
 					throw_error4(game);
 				game->is_player = tab3[j][i];
 			}
-			else if (tab3[j][i] != ' ' && !ft_isdigit(tab3[j][i]))
+			else if (tab3[j][i] != ' ' && !ft_isbinary(tab3[j][i]))
 				throw_error4(game);
 			i++;
 		}
 		j++;
 	}
+	if (game->is_player == 'H')
+		throw_error66(game);
 }
 
 int	find_longer_line(char **map)

@@ -87,7 +87,8 @@ void	throw_error4(t_game *game)
 
 void	throw_error66(t_game *game)
 {
-	ft_printf("too many players\n");
+	ft_printf("error players\n");
+	fail_finish(game);
 	free(game);
 	exit(EXIT_FAILURE);
 }
