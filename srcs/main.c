@@ -85,7 +85,6 @@ int	main(int ac, char **av)
 {
 	t_game	*game;
 
-	(void) ac;
 	(void) av;
 	is_cub(ac, av);
 	game = malloc((sizeof (t_game)));

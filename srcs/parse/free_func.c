@@ -40,6 +40,21 @@ void	free_tab(char **tab)
 	free(tab);
 }
 
+void	free_help(char *str, char *compas, char *compas2)
+{
+	free(str);
+	free(compas2);
+	free(compas);
+}
+
+void	leave(t_game *game, char *str, char *compas, char *compas2)
+{
+	free(str);
+	free(compas2);
+	free(compas);
+	throw_error5(game);
+}
+
 void	fail_finish(t_game *g)
 {
 	free_magic(g);
