@@ -38,10 +38,10 @@ int	parse_select(t_game *game, char *str, char *compas, char *compas2)
 		parse_help4(game, str);
 	else if (!ft_strcmp(compas, "EA") && !game->ea_texture)
 		parse_help3(game, str);
-	else if (!ft_strcmp(compas2, "F") && !game->floor_rgb)
-		parse_help5(game, str);
 	else if (!ft_strcmp(compas2, "C") && !game->ceiling_rgb)
 		parse_help6(game, str);
+	else if (!ft_strcmp(compas2, "F") && !game->floor_rgb)
+		parse_help5(game, str);
 	else if (compas[0] == '\0')
 		game->truc++;
 	else if (game->truc_parse != 6)
@@ -115,10 +115,10 @@ void	main_parsing(t_game *game)
 	add_border(game);
 	parse_settings(game);
 	final_map(game);
+	is_player(game);
 	if_zero(game, game->tab3);
 	is_line_left(game);
 	is_line_right(game);
-	is_player(game);
 	is_collunm_bot(game);
 	if (game->is_player == 'H')
 		throw_error66(game);
