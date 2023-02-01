@@ -16,15 +16,14 @@ char	*parse(t_game *game)
 		throw_error2(game, tab);
 	while (ret != NULL)
 	{
-		tab = ft_strjoin(tab, ret);
 		tab = ft_strjoin(tab, " ");
+		tab = ft_strjoin(tab, ret);
 		tmp = ret;
 		i++;
 		ret = get_next_line(game->fd);
 		if (ret != NULL)
 			free(tmp);
 	}
-	tab = ft_strjoin(tab, "\n \n \n \n \n \n \n\n \n \n \n \n \n \n1");
 	return (free(tmp), tab);
 }
 
@@ -160,7 +159,7 @@ void	main_parsing(t_game *game)
 	add_border(game);
 	parse_settings(game);
 	final_map(game);
-	//print_map2(game);
+	print_map2(game);
 	if_zero(game, game->tab3);
 	is_line_left(game);
 	is_line_right(game);
