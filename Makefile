@@ -13,6 +13,7 @@ SRCS         = srcs/main.c \
 				srcs/parse/check_map2.c \
 				srcs/parse/check_map3.c \
 				srcs/parse/error.c \
+				srcs/parse/error2.c \
 				srcs/parse/free_func.c \
 				srcs/parse/utils.c \
 				srcs/parse/rgb.c \

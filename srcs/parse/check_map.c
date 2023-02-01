@@ -47,9 +47,9 @@ void	is_player(t_game *game)
 	int		j;
 	char	**tab3;
 
-	j = 0;
+	j = -1;
 	tab3 = game->tab3;
-	while (tab3[j])
+	while (tab3[++j])
 	{
 		i = 0;
 		while (tab3[j][i])
@@ -67,10 +67,7 @@ void	is_player(t_game *game)
 				throw_error4(game);
 			i++;
 		}
-		j++;
 	}
-	if (game->is_player == 'H')
-		throw_error66(game);
 }
 
 int	find_longer_line(char **map)
@@ -90,14 +87,4 @@ int	find_longer_line(char **map)
 		i++;
 	}
 	return (size);
-}
-
-int	find_longer_collum(char	**map)
-{
-	int	i;
-
-	i = 0;
-	while (map[i])
-		i++;
-	return (i);
 }

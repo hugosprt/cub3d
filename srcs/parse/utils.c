@@ -77,3 +77,13 @@ char	*ft_strldup(char *source, int size)
 	dest[i] = '\0';
 	return (dest);
 }
+
+int	find_longer_collum(char	**map)
+{
+	int	i;
+
+	i = 0;
+	while (map[i])
+		i++;
+	return (i);
+}
