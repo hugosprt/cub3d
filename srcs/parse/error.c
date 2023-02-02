@@ -6,7 +6,7 @@
 /*   By: hspriet <hspriet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 19:59:35 by hspriet           #+#    #+#             */
-/*   Updated: 2023/02/01 19:59:36 by hspriet          ###   ########.fr       */
+/*   Updated: 2023/02/02 12:02:56 by hspriet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,13 +50,13 @@ void	throw_error3(t_game *g, char *tab)
 	free(g->tab2);
 	free(g->p);
 	free(g);
-	ft_printf("error map4\n");
+	ft_printf("error wall\n");
 	exit(EXIT_FAILURE);
 }
 
 void	throw_error4(t_game *game)
 {
-	ft_printf("error map2\n");
+	ft_printf("error uncomplete map\n");
 	fail_finish(game);
 	free(game);
 	exit(EXIT_FAILURE);

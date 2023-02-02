@@ -6,7 +6,7 @@
 /*   By: hspriet <hspriet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 19:59:42 by hspriet           #+#    #+#             */
-/*   Updated: 2023/02/01 19:59:43 by hspriet          ###   ########.fr       */
+/*   Updated: 2023/02/02 12:02:22 by hspriet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,6 @@ void	throw_error5(t_game *g)
 	free(g->tab2);
 	free(g->p);
 	free(g);
-	ft_printf("error map5\n");
+	ft_printf("error description\n");
 	exit(EXIT_FAILURE);
 }
